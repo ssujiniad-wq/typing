@@ -100,12 +100,17 @@
   .target .ch.cur { background: var(--yellow); border-bottom: 3px solid var(--blue-dark); }
   .target .ch.space.bad { background: #ffb3b5; }
 
-  #typed {
+  #typed, #typed-area {
     width: 100%; font-family: 'Galmuri11', monospace; font-size: 22px; padding: 14px;
     border: 3px solid var(--blue); background: var(--yellow-soft); color: var(--ink);
     outline: none; letter-spacing: 2px;
   }
-  #typed:focus { border-color: var(--blue-dark); box-shadow: 0 0 0 3px var(--yellow); }
+  #typed-area { display: none; resize: none; line-height: 1.7; letter-spacing: 1px; }
+  #typed:focus, #typed-area:focus { border-color: var(--blue-dark); box-shadow: 0 0 0 3px var(--yellow); }
+
+  /* 5분 긴글: 여러 줄 지문 */
+  .target.multiline { font-size: 22px; letter-spacing: 1px; line-height: 1.8; min-height: 180px; }
+  .target .ch.brk { color: #c3c9d6; }
 
   .play-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; gap: 10px; }
   .small-btn {
@@ -203,6 +208,7 @@
     <div class="progress-wrap"><div class="progress-bar" id="progress-bar"></div></div>
     <div class="target" id="target"></div>
     <input id="typed" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="여기에 입력하세요" />
+    <textarea id="typed-area" rows="4" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="위 글을 보고 이어서 입력하세요 (줄 끝에서는 띄어쓰기 또는 Enter)"></textarea>
     <div class="play-foot">
       <button class="small-btn" id="quit-btn">← 그만하기</button>
       <button class="small-btn" id="skip-btn">건너뛰기 →</button>
@@ -298,18 +304,30 @@ const DATA = {
     words: ["사과","학교","친구","컴퓨터","코딩","게임","로봇","우주","그림","음악","나무","바다","하늘","토끼","강아지","선생님","도서관","자전거","무지개","피아노","마인크래프트","로블록스","스크래치","파이썬"],
     sentences: ["오늘도 즐겁게 코딩해요.","나는 컴퓨터가 좋아요.","친구와 함께 게임을 만들어요.","한 줄씩 천천히 입력해요.","실수해도 괜찮아요.","타자가 점점 빨라져요.","꿈을 향해 한 걸음씩 나아가요.","내가 만든 프로그램이 움직였어요."],
     timed5: [
-      "컴퓨터는 우리가 시키는 대로 움직이는 똑똑한 기계예요.",
-      "한 줄 한 줄 명령을 적으면 화면 속 캐릭터가 움직입니다.",
-      "처음에는 손가락이 자판을 찾느라 느리지만 곧 익숙해져요.",
-      "틀린 글자는 빨갛게 표시되니 천천히 또박또박 고쳐 보세요.",
-      "오늘 연습한 만큼 내일은 더 빠르게 칠 수 있어요.",
-      "코딩은 어려운 게 아니라 차근차근 쌓아가는 즐거운 놀이예요.",
-      "내가 만든 게임을 친구가 플레이하면 정말 뿌듯합니다.",
-      "마인크래프트로 작은 집을 짓고 영상으로 남겨 보아요.",
-      "실수해도 다시 시도하는 마음이 가장 멋진 실력이에요.",
-      "스크래치 블록을 이어 붙이면 이야기가 만들어집니다.",
-      "파이썬으로 숫자를 더하고 빼는 계산기를 만들 수 있어요.",
-      "꾸준히 연습하면 어느새 자판을 보지 않고도 칠 수 있어요."
+      [ "동해물과 백두산이 마르고 닳도록",
+        "하느님이 보우하사 우리나라 만세",
+        "무궁화 삼천리 화려강산",
+        "대한사람 대한으로 길이 보전하세",
+        "남산 위에 저 소나무 철갑을 두른 듯",
+        "바람 서리 불변함은 우리 기상일세" ],
+      [ "오늘도 컴퓨터 앞에 앉아",
+        "한 줄씩 명령을 적어 봅니다",
+        "틀려도 괜찮아 다시 고치면 되니까",
+        "내가 만든 작은 프로그램이",
+        "화면 위에서 움직이기 시작하면",
+        "세상에서 제일 신나는 순간이 됩니다" ],
+      [ "파란 하늘 위로 구름이 흘러가고",
+        "작은 새들이 즐겁게 노래합니다",
+        "바람은 나뭇잎을 살랑 흔들고",
+        "맑은 시냇물은 졸졸 흘러갑니다",
+        "오늘 하루도 즐겁게 보내요",
+        "내일은 더 좋은 일이 생길 거예요" ],
+      [ "코딩은 어려운 마법이 아니에요",
+        "차근차근 쌓아가는 즐거운 놀이예요",
+        "스크래치 블록을 이어 붙이면",
+        "나만의 이야기가 살아 움직입니다",
+        "마인크래프트로 작은 집을 짓고",
+        "소중한 하루를 영상으로 남겨 봅니다" ]
     ]
   },
   en: {
@@ -317,18 +335,24 @@ const DATA = {
     words: ["cat","dog","sun","run","code","game","jump","book","tree","star","fish","blue","play","kind","hero","milk","gold","ship","moon","rain","bear","robot","pixel","mouse"],
     sentences: ["I love to code.","Typing is fun.","We make games together.","Practice makes perfect.","Robots can dance and sing.","Dream big and code every day.","Hello world from our class.","Keep going, you are doing great."],
     timed5: [
-      "A computer does exactly what you tell it to do.",
-      "When you write code, the character on the screen moves.",
-      "At first your fingers are slow, but soon they learn.",
-      "Wrong letters turn red, so fix them slowly and clearly.",
-      "The more you practice today, the faster you type tomorrow.",
-      "Coding is not hard, it is a fun game you build step by step.",
-      "It feels great when a friend plays the game you made.",
-      "Build a small house in Minecraft and save it as a video.",
-      "Trying again after a mistake is the best skill of all.",
-      "Connect scratch blocks and a fun story comes alive.",
-      "With python you can make a simple calculator.",
-      "Keep practicing and you will type without looking down."
+      [ "The quick brown fox jumps over the lazy dog",
+        "A computer does just what we ask it to do",
+        "We write code line by line and watch it run",
+        "Mistakes are fine because we can fix them",
+        "Every day we practice we get a little faster",
+        "Keep going and you will reach your goal" ],
+      [ "Twinkle twinkle little star",
+        "How I wonder what you are",
+        "Up above the world so high",
+        "Like a diamond in the sky",
+        "When the day is done and gone",
+        "We will type another happy song" ],
+      [ "Today I sit in front of my computer",
+        "I type one command after another",
+        "When my little program starts to move",
+        "it is the most exciting moment of all",
+        "I build a small house in Minecraft",
+        "and save my day as a short video" ]
     ]
   }
 };
@@ -342,9 +366,20 @@ let playerName = "";
 let lang = "ko";
 let stage = "keys";
 let timed = false;
-let queue = [], idx = 0, target = "";
+let queue = [], idx = 0, target = "", breakSet = new Set();
 let startTime = null, totalTyped = 0, totalCorrect = 0;
 let timerId = null, ended = false;
+
+function activeInputEl() { return timed ? document.getElementById("typed-area") : document.getElementById("typed"); }
+// 여러 줄 지문(배열)이면 줄 사이를 띄어쓰기로 잇고, 줄바꿈 위치를 기억
+function buildTarget(item) {
+  if (Array.isArray(item)) {
+    const breaks = new Set(); let pos = 0;
+    item.forEach((line, i) => { if (i < item.length - 1) { pos += line.length; breaks.add(pos); pos += 1; } });
+    return { text: item.join(" "), breaks };
+  }
+  return { text: item, breaks: new Set() };
+}
 
 const $ = (id) => document.getElementById(id);
 function show(screen) {
@@ -422,20 +457,24 @@ function startSession() {
   }
   idx = 0; startTime = null; totalTyped = 0; totalCorrect = 0; ended = false;
 
-  // HUD 시간 라벨
+  // HUD 시간 라벨 + 입력칸 전환 (단문은 한 줄 입력, 5분 긴글은 여러 줄 입력)
   $("hud-time-k").textContent = timed ? "남은 시간" : "시간(초)";
+  $("typed").style.display = timed ? "none" : "block";
+  $("typed-area").style.display = timed ? "block" : "none";
 
   show("play");
   loadProblem();
-  $("typed").focus();
+  activeInputEl().focus();
   clearInterval(timerId);
   timerId = setInterval(tick, 200);
 }
 
 function loadProblem() {
   if (idx >= queue.length) { if (timed) { queue = shuffle(queue); idx = 0; } else return; }
-  target = queue[idx];
-  $("typed").value = "";
+  const built = buildTarget(queue[idx]);
+  target = built.text; breakSet = built.breaks;
+  const inp = activeInputEl();
+  inp.value = "";
   renderTarget("");
   if (timed) {
     $("hud-round").textContent = "5분";
@@ -443,38 +482,58 @@ function loadProblem() {
     $("hud-round").textContent = (idx + 1) + "/" + queue.length;
     $("progress-bar").style.width = (idx / queue.length * 100) + "%";
   }
-  $("typed").focus();
+  inp.focus();
 }
 
 function renderTarget(typed) {
   const el = $("target"); el.innerHTML = "";
+  const multiline = breakSet.size > 0;
+  el.classList.toggle("multiline", multiline);
   for (let i = 0; i < target.length; i++) {
     const span = document.createElement("span");
     const tc = target[i];
-    span.className = "ch"; span.textContent = tc === " " ? "␣" : tc;
-    if (tc === " ") span.classList.add("space");
+    const isBreak = breakSet.has(i);
+    span.className = "ch";
+    if (tc === " ") {
+      span.classList.add("space");
+      span.textContent = isBreak ? "↵" : (multiline ? " " : "␣");
+      if (isBreak) span.classList.add("brk");
+    } else {
+      span.textContent = tc;
+    }
     if (i < typed.length) span.classList.add(typed[i] === tc ? "ok" : "bad");
     else if (i === typed.length) span.classList.add("cur");
     el.appendChild(span);
+    if (isBreak) el.appendChild(document.createElement("br"));
   }
 }
 
-$("typed").addEventListener("input", (e) => {
+function handleInput(e) {
   if (startTime === null) startTime = Date.now();
   const typed = e.target.value;
   renderTarget(typed);
   if (typed.length >= target.length) finishProblem(typed);
-});
-$("typed").addEventListener("keydown", (e) => {
+}
+function handleKeydown(e) {
   if (e.key === "Enter") {
-    const t = $("typed").value;
-    if (t.length > 0) finishProblem(t);
-    e.preventDefault(); return;
+    e.preventDefault();
+    if (timed) { // 긴글: 줄 끝에서 Enter를 띄어쓰기처럼 처리
+      e.target.value = e.target.value + " ";
+      handleInput({ target: e.target });
+    } else {
+      const t = e.target.value;
+      if (t.length > 0) finishProblem(t);
+    }
+    return;
   }
   if (e.key.length === 1) {
-    const pos = $("typed").value.length, expected = target[pos];
+    const pos = e.target.value.length, expected = target[pos];
     if (expected !== undefined && /[a-zA-Z0-9 ;]/.test(e.key)) e.key === expected ? sndOk() : sndErr();
   }
+}
+["typed", "typed-area"].forEach(id => {
+  $(id).addEventListener("input", handleInput);
+  $(id).addEventListener("keydown", handleKeydown);
 });
 
 function countCorrect(typed) {
@@ -499,7 +558,7 @@ function finishProblem(typed) {
 ========================================================= */
 function elapsedSec() { return startTime === null ? 0 : (Date.now() - startTime) / 1000; }
 function liveStats() {
-  const sec = elapsedSec(), tn = $("typed").value;
+  const sec = elapsedSec(), tn = activeInputEl().value;
   const lt = totalTyped + tn.length, lc = totalCorrect + countCorrect(tn);
   return {
     sec,
@@ -530,7 +589,7 @@ function endSession() {
   clearInterval(timerId);
 
   // 진행 중이던 입력도 반영
-  const tn = $("typed").value;
+  const tn = activeInputEl().value;
   const finalTyped = totalTyped + tn.length;
   const finalCorrect = totalCorrect + countCorrect(tn);
 
