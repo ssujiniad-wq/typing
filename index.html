@@ -180,7 +180,7 @@
       <button class="pbtn active" data-stage="keys">자리 연습</button>
       <button class="pbtn" data-stage="words">낱말 연습</button>
       <button class="pbtn" data-stage="sentences">짧은 글</button>
-      <button class="pbtn" data-stage="timed5">⏱ 5분 긴글 도전</button>
+      <button class="pbtn" data-stage="timed5">⏱ 긴 글 도전</button>
     </div>
 
     <div class="section-label">4. 시작!</div>
@@ -193,7 +193,7 @@
 
     <div class="hint">
       한글 모드는 키보드를 <b>한글(한/영 키)</b>로 바꾼 뒤 시작하세요.<br>
-      5분 도전은 긴 글을 5분 동안 입력하고 점수가 랭킹에 올라가요!
+      긴 글 도전은 애국가·동시·동화 등 여러 글이 나와요. 다 치면 끝(최대 5분), 점수는 랭킹에 올라가요!
     </div>
   </div>
 
@@ -247,7 +247,7 @@
       <button class="pbtn" data-f="keys">자리</button>
       <button class="pbtn" data-f="words">낱말</button>
       <button class="pbtn" data-f="sentences">짧은글</button>
-      <button class="pbtn" data-f="timed5">5분</button>
+      <button class="pbtn" data-f="timed5">긴글</button>
     </div>
     <div class="rank-mode" id="rank-count"></div>
     <div class="rank-list" id="rank-list"></div>
@@ -304,30 +304,77 @@ const DATA = {
     words: ["사과","학교","친구","컴퓨터","코딩","게임","로봇","우주","그림","음악","나무","바다","하늘","토끼","강아지","선생님","도서관","자전거","무지개","피아노","마인크래프트","로블록스","스크래치","파이썬"],
     sentences: ["오늘도 즐겁게 코딩해요.","나는 컴퓨터가 좋아요.","친구와 함께 게임을 만들어요.","한 줄씩 천천히 입력해요.","실수해도 괜찮아요.","타자가 점점 빨라져요.","꿈을 향해 한 걸음씩 나아가요.","내가 만든 프로그램이 움직였어요."],
     timed5: [
+      // 🇰🇷 애국가
       [ "동해물과 백두산이 마르고 닳도록",
         "하느님이 보우하사 우리나라 만세",
         "무궁화 삼천리 화려강산",
         "대한사람 대한으로 길이 보전하세",
         "남산 위에 저 소나무 철갑을 두른 듯",
         "바람 서리 불변함은 우리 기상일세" ],
+      // 💻 코딩 이야기
       [ "오늘도 컴퓨터 앞에 앉아",
         "한 줄씩 명령을 적어 봅니다",
         "틀려도 괜찮아 다시 고치면 되니까",
         "내가 만든 작은 프로그램이",
         "화면 위에서 움직이기 시작하면",
         "세상에서 제일 신나는 순간이 됩니다" ],
+      // 🌤 자연 풍경
       [ "파란 하늘 위로 구름이 흘러가고",
         "작은 새들이 즐겁게 노래합니다",
         "바람은 나뭇잎을 살랑 흔들고",
         "맑은 시냇물은 졸졸 흘러갑니다",
         "오늘 하루도 즐겁게 보내요",
         "내일은 더 좋은 일이 생길 거예요" ],
+      // 🎮 스크래치와 마인크래프트
       [ "코딩은 어려운 마법이 아니에요",
         "차근차근 쌓아가는 즐거운 놀이예요",
         "스크래치 블록을 이어 붙이면",
         "나만의 이야기가 살아 움직입니다",
         "마인크래프트로 작은 집을 짓고",
-        "소중한 하루를 영상으로 남겨 봅니다" ]
+        "소중한 하루를 영상으로 남겨 봅니다" ],
+      // 📜 속담 모음
+      [ "가는 말이 고와야 오는 말이 곱다",
+        "백지장도 맞들면 낫다",
+        "티끌 모아 태산",
+        "천 리 길도 한 걸음부터",
+        "낮말은 새가 듣고 밤말은 쥐가 듣는다",
+        "고생 끝에 낙이 온다" ],
+      // ☁️ 동시 - 구름 (짧은 글)
+      [ "하얀 구름 둥실둥실",
+        "파란 하늘 위를 떠가요",
+        "어디로 가는 걸까요",
+        "바람을 따라 흘러서",
+        "산 너머 멀리 사라져요" ],
+      // 🐢 토끼와 거북이
+      [ "옛날 옛적에 토끼와 거북이가 살았어요",
+        "둘은 누가 더 빠른지 시합을 했어요",
+        "토끼는 빠르게 앞서 나갔어요",
+        "거북이는 느리지만 쉬지 않고 걸었어요",
+        "토끼는 그만 낮잠을 자고 말았어요",
+        "거북이는 천천히 토끼를 앞질렀어요",
+        "결국 거북이가 시합에서 이겼어요",
+        "꾸준함이 빠름을 이긴 거예요" ],
+      // 🪐 태양계 이야기
+      [ "우리는 태양계에 살고 있어요",
+        "태양을 중심으로 행성들이 돌아요",
+        "수성 금성 지구 화성",
+        "목성 토성 천왕성 해왕성",
+        "지구는 우리가 사는 푸른 별이에요",
+        "달은 지구 주위를 빙글빙글 돌아요",
+        "밤하늘의 별들은 아주 멀리 있어요",
+        "우주는 정말 넓고 신비로워요" ],
+      // 🤝 우정 (짧은 글)
+      [ "오늘 학원에서 새 친구를 만났어요",
+        "함께 코딩하니 더 재미있어요",
+        "어려운 문제도 같이 풀면 쉬워요",
+        "웃음소리가 교실에 가득해요",
+        "내일 또 만날 생각에 설레요" ],
+      // 💪 좋은 글귀 (짧은 글)
+      [ "실패는 성공의 어머니예요",
+        "포기하지 않으면 길이 보여요",
+        "오늘의 노력은 내일의 실력이 돼요",
+        "작은 한 걸음이 큰 변화를 만들어요",
+        "할 수 있다고 믿으면 할 수 있어요" ]
     ]
   },
   en: {
@@ -335,29 +382,82 @@ const DATA = {
     words: ["cat","dog","sun","run","code","game","jump","book","tree","star","fish","blue","play","kind","hero","milk","gold","ship","moon","rain","bear","robot","pixel","mouse"],
     sentences: ["I love to code.","Typing is fun.","We make games together.","Practice makes perfect.","Robots can dance and sing.","Dream big and code every day.","Hello world from our class.","Keep going, you are doing great."],
     timed5: [
+      // 🦊 Pangram + coding
       [ "The quick brown fox jumps over the lazy dog",
         "A computer does just what we ask it to do",
         "We write code line by line and watch it run",
         "Mistakes are fine because we can fix them",
         "Every day we practice we get a little faster",
         "Keep going and you will reach your goal" ],
+      // ⭐ Twinkle twinkle (nursery rhyme)
       [ "Twinkle twinkle little star",
         "How I wonder what you are",
         "Up above the world so high",
         "Like a diamond in the sky",
         "When the day is done and gone",
         "We will type another happy song" ],
+      // 💻 My computer
       [ "Today I sit in front of my computer",
         "I type one command after another",
         "When my little program starts to move",
         "it is the most exciting moment of all",
         "I build a small house in Minecraft",
-        "and save my day as a short video" ]
+        "and save my day as a short video" ],
+      // 📜 Proverbs
+      [ "A friend in need is a friend indeed",
+        "Practice makes perfect",
+        "Slow and steady wins the race",
+        "The early bird catches the worm",
+        "Where there is a will there is a way",
+        "Every cloud has a silver lining" ],
+      // 🐢 The tortoise and the hare
+      [ "Once upon a time a hare met a tortoise",
+        "They wanted to know who was faster",
+        "So they started a running race",
+        "The hare ran fast and went far ahead",
+        "Then the hare took a long nap",
+        "The slow tortoise kept on walking",
+        "In the end the tortoise won the race",
+        "Slow and steady wins the day" ],
+      // 🪐 The solar system
+      [ "We live in the solar system",
+        "Planets move around the sun",
+        "Mercury Venus Earth and Mars",
+        "Jupiter Saturn Uranus Neptune",
+        "Earth is our blue and green home",
+        "The moon goes around the earth",
+        "Stars in the night sky are far away",
+        "Space is wide and full of wonder" ],
+      // 📅 Days and months (short)
+      [ "Monday Tuesday Wednesday Thursday",
+        "Friday Saturday and Sunday",
+        "January February March April",
+        "May June July and August",
+        "September October November December" ],
+      // 🐑 Mary had a little lamb
+      [ "Mary had a little lamb",
+        "Its fleece was white as snow",
+        "And everywhere that Mary went",
+        "the lamb was sure to go",
+        "It followed her to school one day",
+        "which was against the rule" ],
+      // 🤝 New friend (short)
+      [ "Today I met a new friend at class",
+        "Coding together is much more fun",
+        "I help you and you help me",
+        "Laughter fills the whole room",
+        "I cannot wait to meet again" ],
+      // 💪 Good words (short)
+      [ "Failure is the mother of success",
+        "If you never give up you find a way",
+        "Today's effort is tomorrow's skill",
+        "One small step makes a big change",
+        "Believe you can and you can" ]
     ]
   }
 };
-const STAGE_NAME = { keys: "자리 연습", words: "낱말 연습", sentences: "짧은 글", timed5: "5분 긴글 도전" };
-const TIMED_SECONDS = 300; // 5분
+const STAGE_NAME = { keys: "자리 연습", words: "낱말 연습", sentences: "짧은 글", timed5: "긴 글 도전" };
+const TIMED_SECONDS = 300; // 최대 5분 (글을 다 치면 그 전에 종료)
 
 /* =========================================================
    ③ 상태
@@ -450,17 +550,19 @@ function startSession() {
   timed = (stage === "timed5");
   const pool = DATA[lang][stage];
   if (timed) {
-    queue = shuffle(pool);
+    // 한 세션 = 글 한 편 (다 치면 5분 전에라도 종료, 5분은 최대 상한)
+    queue = [ pool[Math.floor(Math.random() * pool.length)] ];
   } else {
     const limit = stage === "sentences" ? 6 : 10;
     queue = shuffle(pool).slice(0, Math.min(limit, pool.length));
   }
   idx = 0; startTime = null; totalTyped = 0; totalCorrect = 0; ended = false;
 
-  // HUD 시간 라벨 + 입력칸 전환 (단문은 한 줄 입력, 5분 긴글은 여러 줄 입력)
+  // HUD 시간 라벨 + 입력칸 전환 (단문은 한 줄 입력, 긴 글은 여러 줄 입력)
   $("hud-time-k").textContent = timed ? "남은 시간" : "시간(초)";
   $("typed").style.display = timed ? "none" : "block";
   $("typed-area").style.display = timed ? "block" : "none";
+  $("skip-btn").textContent = timed ? "🔀 다른 글" : "건너뛰기 →";
 
   show("play");
   loadProblem();
@@ -477,7 +579,7 @@ function loadProblem() {
   inp.value = "";
   renderTarget("");
   if (timed) {
-    $("hud-round").textContent = "5분";
+    $("hud-round").textContent = "긴글";
   } else {
     $("hud-round").textContent = (idx + 1) + "/" + queue.length;
     $("progress-bar").style.width = (idx / queue.length * 100) + "%";
@@ -546,10 +648,9 @@ function finishProblem(typed) {
   totalTyped += target.length; totalCorrect += correct;
   if (correct === target.length) sndClear(); else sndErr();
   idx++;
-  if (!timed) {
-    $("progress-bar").style.width = (idx / queue.length * 100) + "%";
-    if (idx >= queue.length) { endSession(); return; }
-  }
+  if (timed) { endSession(); return; } // 긴 글 한 편 완성 → 종료 (5분 전이라도)
+  $("progress-bar").style.width = (idx / queue.length * 100) + "%";
+  if (idx >= queue.length) { endSession(); return; }
   loadProblem();
 }
 
@@ -574,7 +675,9 @@ function tick() {
     const remain = Math.max(0, TIMED_SECONDS - Math.floor(s.sec));
     const m = String(Math.floor(remain/60)).padStart(1,'0'), sec = String(remain%60).padStart(2,'0');
     $("hud-time").textContent = m + ":" + sec;
-    $("progress-bar").style.width = ((TIMED_SECONDS - remain) / TIMED_SECONDS * 100) + "%";
+    // 진행바 = 글을 얼마나 쳤는지 (다 치면 종료)
+    const tlen = activeInputEl().value.length;
+    $("progress-bar").style.width = Math.min(100, (tlen / target.length * 100)) + "%";
     if (startTime !== null && remain <= 0 && !ended) endSession();
   } else {
     $("hud-time").textContent = Math.floor(s.sec);
@@ -593,7 +696,7 @@ function endSession() {
   const finalTyped = totalTyped + tn.length;
   const finalCorrect = totalCorrect + countCorrect(tn);
 
-  const sec = timed ? TIMED_SECONDS : elapsedSec();
+  const sec = timed ? Math.min(elapsedSec(), TIMED_SECONDS) : elapsedSec();
   const speed = sec > 0 ? Math.round(finalCorrect / sec * 60) : 0;
   const acc = finalTyped > 0 ? Math.round(finalCorrect / finalTyped * 100) : 100;
   const score = Math.round(speed * (acc / 100) * 1.5);
@@ -682,8 +785,13 @@ $("rank-btn").addEventListener("click", openRank);
 $("result-rank-btn").addEventListener("click", openRank);
 $("rank-refresh").addEventListener("click", renderRank);
 $("skip-btn").addEventListener("click", () => {
+  if (timed) { // 다른 글로 교체 (점수에 반영 안 함, 시간은 계속)
+    const pool = DATA[lang].timed5;
+    queue = [ pool[Math.floor(Math.random() * pool.length)] ];
+    idx = 0; totalTyped = 0; totalCorrect = 0; loadProblem(); return;
+  }
   totalTyped += target.length; idx++;
-  if (!timed && idx >= queue.length) { endSession(); return; }
+  if (idx >= queue.length) { endSession(); return; }
   loadProblem();
 });
 $("quit-btn").addEventListener("click", () => { clearInterval(timerId); ended = true; show("home"); });
