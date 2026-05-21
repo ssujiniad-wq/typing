@@ -108,9 +108,13 @@
   #typed-area { display: none; resize: none; line-height: 1.7; letter-spacing: 1px; }
   #typed:focus, #typed-area:focus { border-color: var(--blue-dark); box-shadow: 0 0 0 3px var(--yellow); }
 
-  /* 5분 긴글: 여러 줄 지문 */
-  .target.multiline { font-size: 22px; letter-spacing: 1px; line-height: 1.8; min-height: 180px; }
-  .target .ch.brk { color: #c3c9d6; }
+  /* 긴 글: 여러 줄 지문 (전체 표시, 현재 줄만 입력) */
+  .target.multiline { font-size: 21px; letter-spacing: 1px; line-height: 1.6; min-height: 180px; }
+  .target .tline { padding: 3px 4px; border-radius: 2px; }
+  .target .tline.active { background: var(--yellow-soft); }
+  .target .tline.active::before { content: "▸ "; color: var(--blue); font-weight: bold; }
+  .target .tline.future { color: #aeb6c7; }
+  .target .ch.space { white-space: pre; }
 
   .play-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; gap: 10px; }
   .small-btn {
@@ -466,19 +470,17 @@ let playerName = "";
 let lang = "ko";
 let stage = "keys";
 let timed = false;
-let queue = [], idx = 0, target = "", breakSet = new Set();
+let queue = [], idx = 0, target = "";
 let startTime = null, totalTyped = 0, totalCorrect = 0;
 let timerId = null, ended = false;
+// 긴 글(timed) 전용: 전체 줄은 보여주되 한 줄씩 입력
+let passageLines = [], lineIdx = 0, doneTyped = [];
 
-function activeInputEl() { return timed ? document.getElementById("typed-area") : document.getElementById("typed"); }
-// 여러 줄 지문(배열)이면 줄 사이를 띄어쓰기로 잇고, 줄바꿈 위치를 기억
-function buildTarget(item) {
-  if (Array.isArray(item)) {
-    const breaks = new Set(); let pos = 0;
-    item.forEach((line, i) => { if (i < item.length - 1) { pos += line.length; breaks.add(pos); pos += 1; } });
-    return { text: item.join(" "), breaks };
-  }
-  return { text: item, breaks: new Set() };
+function activeInputEl() { return document.getElementById("typed"); }
+function countCorrectStr(typed, tgt) {
+  let c = 0; const n = Math.min(typed.length, tgt.length);
+  for (let i = 0; i < n; i++) if (typed[i] === tgt[i]) c++;
+  return c;
 }
 
 const $ = (id) => document.getElementById(id);
@@ -551,17 +553,19 @@ function startSession() {
   const pool = DATA[lang][stage];
   if (timed) {
     // 한 세션 = 글 한 편 (다 치면 5분 전에라도 종료, 5분은 최대 상한)
-    queue = [ pool[Math.floor(Math.random() * pool.length)] ];
+    passageLines = pool[Math.floor(Math.random() * pool.length)];
+    lineIdx = 0; doneTyped = [];
   } else {
     const limit = stage === "sentences" ? 6 : 10;
     queue = shuffle(pool).slice(0, Math.min(limit, pool.length));
   }
   idx = 0; startTime = null; totalTyped = 0; totalCorrect = 0; ended = false;
 
-  // HUD 시간 라벨 + 입력칸 전환 (단문은 한 줄 입력, 긴 글은 여러 줄 입력)
+  // HUD 시간 라벨 (입력칸은 항상 한 줄)
   $("hud-time-k").textContent = timed ? "남은 시간" : "시간(초)";
-  $("typed").style.display = timed ? "none" : "block";
-  $("typed-area").style.display = timed ? "block" : "none";
+  $("typed").style.display = "block";
+  $("typed-area").style.display = "none";
+  $("typed").placeholder = timed ? "이 줄을 입력하고 Enter (또는 끝까지 치면 자동으로 다음 줄)" : "여기에 입력하세요";
   $("skip-btn").textContent = timed ? "🔀 다른 글" : "건너뛰기 →";
 
   show("play");
@@ -572,60 +576,75 @@ function startSession() {
 }
 
 function loadProblem() {
-  if (idx >= queue.length) { if (timed) { queue = shuffle(queue); idx = 0; } else return; }
-  const built = buildTarget(queue[idx]);
-  target = built.text; breakSet = built.breaks;
-  const inp = activeInputEl();
+  const inp = $("typed");
   inp.value = "";
-  renderTarget("");
   if (timed) {
-    $("hud-round").textContent = "긴글";
+    target = passageLines[lineIdx];
+    renderPassage("");
   } else {
+    target = queue[idx];
+    renderTarget("");
     $("hud-round").textContent = (idx + 1) + "/" + queue.length;
     $("progress-bar").style.width = (idx / queue.length * 100) + "%";
   }
   inp.focus();
 }
 
+// 단문(자리·낱말·짧은글): 한 줄만 표시
 function renderTarget(typed) {
-  const el = $("target"); el.innerHTML = "";
-  const multiline = breakSet.size > 0;
-  el.classList.toggle("multiline", multiline);
+  const el = $("target"); el.innerHTML = ""; el.classList.remove("multiline");
   for (let i = 0; i < target.length; i++) {
     const span = document.createElement("span");
     const tc = target[i];
-    const isBreak = breakSet.has(i);
     span.className = "ch";
-    if (tc === " ") {
-      span.classList.add("space");
-      span.textContent = isBreak ? "↵" : (multiline ? " " : "␣");
-      if (isBreak) span.classList.add("brk");
-    } else {
-      span.textContent = tc;
-    }
+    span.textContent = tc === " " ? "␣" : tc;
+    if (tc === " ") span.classList.add("space");
     if (i < typed.length) span.classList.add(typed[i] === tc ? "ok" : "bad");
     else if (i === typed.length) span.classList.add("cur");
     el.appendChild(span);
-    if (isBreak) el.appendChild(document.createElement("br"));
   }
+}
+
+// 긴 글: 전체 줄을 보여주고, 현재 줄만 입력 중
+function renderPassage(activeTyped) {
+  const el = $("target"); el.innerHTML = ""; el.classList.add("multiline");
+  passageLines.forEach((line, li) => {
+    const lineDiv = document.createElement("div");
+    lineDiv.className = "tline" + (li === lineIdx ? " active" : li > lineIdx ? " future" : " done");
+    const cmp = li < lineIdx ? (doneTyped[li] || "") : (li === lineIdx ? activeTyped : "");
+    for (let i = 0; i < line.length; i++) {
+      const span = document.createElement("span");
+      const tc = line[i];
+      span.className = "ch";
+      span.textContent = tc === " " ? " " : tc;
+      if (tc === " ") span.classList.add("space");
+      if (li <= lineIdx) {
+        if (i < cmp.length) span.classList.add(cmp[i] === tc ? "ok" : "bad");
+        else if (li === lineIdx && i === cmp.length) span.classList.add("cur");
+      }
+      lineDiv.appendChild(span);
+    }
+    el.appendChild(lineDiv);
+  });
+  $("hud-round").textContent = (lineIdx + 1) + "/" + passageLines.length + "줄";
 }
 
 function handleInput(e) {
   if (startTime === null) startTime = Date.now();
   const typed = e.target.value;
-  renderTarget(typed);
-  if (typed.length >= target.length) finishProblem(typed);
+  if (timed) {
+    renderPassage(typed);
+    if (typed === target) advanceLine();          // 그 줄을 정확히 다 치면 자동으로 다음 줄
+  } else {
+    renderTarget(typed);
+    if (typed.length >= target.length) finishProblem(typed);
+  }
 }
 function handleKeydown(e) {
   if (e.key === "Enter") {
     e.preventDefault();
-    if (timed) { // 긴글: 줄 끝에서 Enter를 띄어쓰기처럼 처리
-      e.target.value = e.target.value + " ";
-      handleInput({ target: e.target });
-    } else {
-      const t = e.target.value;
-      if (t.length > 0) finishProblem(t);
-    }
+    if (timed) { if (e.target.value.length > 0) advanceLine(); }
+    else { if (e.target.value.length > 0) finishProblem(e.target.value); }
     return;
   }
   if (e.key.length === 1) {
@@ -633,22 +652,31 @@ function handleKeydown(e) {
     if (expected !== undefined && /[a-zA-Z0-9 ;]/.test(e.key)) e.key === expected ? sndOk() : sndErr();
   }
 }
-["typed", "typed-area"].forEach(id => {
-  $(id).addEventListener("input", handleInput);
-  $(id).addEventListener("keydown", handleKeydown);
-});
+$("typed").addEventListener("input", handleInput);
+$("typed").addEventListener("keydown", handleKeydown);
 
-function countCorrect(typed) {
-  let c = 0; const n = Math.min(typed.length, target.length);
-  for (let i = 0; i < n; i++) if (typed[i] === target[i]) c++;
-  return c;
+function countCorrect(typed) { return countCorrectStr(typed, target); }
+
+// 긴 글에서 현재 줄을 마치고 다음 줄로
+function advanceLine() {
+  const typed = $("typed").value;
+  doneTyped[lineIdx] = typed;
+  totalTyped += target.length;
+  totalCorrect += countCorrectStr(typed, target);
+  if (typed === target) sndClear(); else sndErr();
+  lineIdx++;
+  $("typed").value = "";
+  if (lineIdx >= passageLines.length) { endSession(); return; } // 글 한 편 끝 → 종료
+  target = passageLines[lineIdx];
+  renderPassage("");
+  $("typed").focus();
 }
+
 function finishProblem(typed) {
   const correct = countCorrect(typed);
   totalTyped += target.length; totalCorrect += correct;
   if (correct === target.length) sndClear(); else sndErr();
   idx++;
-  if (timed) { endSession(); return; } // 긴 글 한 편 완성 → 종료 (5분 전이라도)
   $("progress-bar").style.width = (idx / queue.length * 100) + "%";
   if (idx >= queue.length) { endSession(); return; }
   loadProblem();
@@ -675,9 +703,9 @@ function tick() {
     const remain = Math.max(0, TIMED_SECONDS - Math.floor(s.sec));
     const m = String(Math.floor(remain/60)).padStart(1,'0'), sec = String(remain%60).padStart(2,'0');
     $("hud-time").textContent = m + ":" + sec;
-    // 진행바 = 글을 얼마나 쳤는지 (다 치면 종료)
-    const tlen = activeInputEl().value.length;
-    $("progress-bar").style.width = Math.min(100, (tlen / target.length * 100)) + "%";
+    // 진행바 = 몇 줄 쳤는지 (다 치면 종료)
+    const frac = target.length ? Math.min(1, activeInputEl().value.length / target.length) : 0;
+    $("progress-bar").style.width = ((lineIdx + frac) / passageLines.length * 100) + "%";
     if (startTime !== null && remain <= 0 && !ended) endSession();
   } else {
     $("hud-time").textContent = Math.floor(s.sec);
@@ -787,8 +815,9 @@ $("rank-refresh").addEventListener("click", renderRank);
 $("skip-btn").addEventListener("click", () => {
   if (timed) { // 다른 글로 교체 (점수에 반영 안 함, 시간은 계속)
     const pool = DATA[lang].timed5;
-    queue = [ pool[Math.floor(Math.random() * pool.length)] ];
-    idx = 0; totalTyped = 0; totalCorrect = 0; loadProblem(); return;
+    passageLines = pool[Math.floor(Math.random() * pool.length)];
+    lineIdx = 0; doneTyped = []; totalTyped = 0; totalCorrect = 0;
+    loadProblem(); return;
   }
   totalTyped += target.length; idx++;
   if (idx >= queue.length) { endSession(); return; }
