@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>박수진창의컴퓨터학원 · 픽셀 타자연습</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/quiple/galmuri/dist/galmuri.css" />
+<style>
+  :root {
+    --blue: #1947D6;
+    --blue-dark: #0E2D8A;
+    --yellow: #FFD24A;
+    --blue-soft: #F4F6FB;
+    --yellow-soft: #FFFBEC;
+    --green: #2BB673;
+    --red: #E5484D;
+    --ink: #14213D;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    font-family: 'Galmuri11', 'Galmuri9', monospace;
+    -webkit-font-smoothing: none;
+    image-rendering: pixelated;
+  }
+
+  body {
+    background:
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.04) 0 2px, transparent 2px 4px),
+      linear-gradient(160deg, var(--blue) 0%, var(--blue-dark) 100%);
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    min-height: 100vh;
+  }
+
+  /* 픽셀 테두리 카드 */
+  .card {
+    width: 100%;
+    max-width: 760px;
+    background: var(--blue-soft);
+    border: 4px solid var(--ink);
+    box-shadow:
+      0 0 0 4px var(--yellow),
+      8px 8px 0 0 rgba(0,0,0,0.35);
+    padding: 28px 26px 32px;
+    position: relative;
+  }
+
+  .scanline-top {
+    position: absolute; top: 0; left: 0; right: 0; height: 8px;
+    background: repeating-linear-gradient(90deg, var(--yellow) 0 8px, var(--blue) 8px 16px);
+  }
+
+  h1 {
+    font-family: 'Galmuri14', 'Galmuri11', monospace;
+    color: var(--blue-dark);
+    font-size: 24px;
+    line-height: 1.5;
+    text-align: center;
+    margin-top: 6px;
+  }
+  h1 .sub {
+    display: block;
+    font-family: 'Galmuri9', monospace;
+    font-size: 11px;
+    color: var(--blue);
+    margin-top: 8px;
+    letter-spacing: 1px;
+  }
+
+  .mascot {
+    text-align: center;
+    font-size: 34px;
+    margin: 10px 0 4px;
+    image-rendering: pixelated;
+  }
+
+  .section-label {
+    font-size: 12px;
+    color: var(--blue-dark);
+    margin: 22px 0 10px;
+    border-left: 6px solid var(--yellow);
+    padding-left: 8px;
+  }
+
+  .btn-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .pbtn {
+    font-family: 'Galmuri11', monospace;
+    font-size: 14px;
+    cursor: pointer;
+    background: #fff;
+    color: var(--ink);
+    border: 3px solid var(--ink);
+    box-shadow: 3px 3px 0 0 var(--ink);
+    padding: 12px 16px;
+    flex: 1 1 auto;
+    min-width: 110px;
+    transition: transform .04s, box-shadow .04s;
+    user-select: none;
+  }
+  .pbtn:hover { background: var(--yellow-soft); }
+  .pbtn:active { transform: translate(3px,3px); box-shadow: 0 0 0 0 var(--ink); }
+  .pbtn.active {
+    background: var(--yellow);
+    box-shadow: 3px 3px 0 0 var(--blue-dark);
+  }
+  .pbtn.big {
+    flex: 1 1 100%;
+    font-family: 'Galmuri14', monospace;
+    font-size: 18px;
+    padding: 16px;
+    background: var(--blue);
+    color: #fff;
+    box-shadow: 4px 4px 0 0 var(--blue-dark);
+  }
+  .pbtn.big:hover { background: var(--blue-dark); }
+
+  /* ===== 연습 화면 ===== */
+  #screen-play, #screen-result { display: none; }
+
+  .hud {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+  .stat {
+    background: #fff;
+    border: 3px solid var(--ink);
+    padding: 8px 10px;
+    flex: 1 1 0;
+    min-width: 90px;
+    text-align: center;
+  }
+  .stat .v { font-family: 'Galmuri14', monospace; font-size: 20px; color: var(--blue-dark); }
+  .stat .k { font-size: 10px; color: var(--blue); margin-top: 4px; }
+
+  .progress-wrap {
+    height: 16px;
+    background: #fff;
+    border: 3px solid var(--ink);
+    margin-bottom: 18px;
+    position: relative;
+  }
+  .progress-bar {
+    height: 100%;
+    width: 0%;
+    background: repeating-linear-gradient(90deg, var(--yellow) 0 8px, #ffe588 8px 16px);
+    transition: width .2s;
+  }
+
+  .target {
+    background: #fff;
+    border: 3px solid var(--ink);
+    padding: 22px 18px;
+    font-family: 'Galmuri11', monospace;
+    font-size: 26px;
+    line-height: 1.9;
+    letter-spacing: 2px;
+    min-height: 90px;
+    margin-bottom: 16px;
+    word-break: keep-all;
+  }
+  .target .ch { padding: 1px 0; }
+  .target .ch.ok { color: var(--green); }
+  .target .ch.bad { color: var(--red); background: #ffe1e2; }
+  .target .ch.cur { background: var(--yellow); border-bottom: 3px solid var(--blue-dark); }
+  .target .ch.space.bad { background: #ffb3b5; }
+
+  #typed {
+    width: 100%;
+    font-family: 'Galmuri11', monospace;
+    font-size: 22px;
+    padding: 14px;
+    border: 3px solid var(--blue);
+    background: var(--yellow-soft);
+    color: var(--ink);
+    outline: none;
+    letter-spacing: 2px;
+  }
+  #typed:focus { border-color: var(--blue-dark); box-shadow: 0 0 0 3px var(--yellow); }
+
+  .play-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 14px;
+    gap: 10px;
+  }
+  .small-btn {
+    font-family: 'Galmuri9', monospace;
+    font-size: 11px;
+    cursor: pointer;
+    background: #fff;
+    border: 2px solid var(--ink);
+    box-shadow: 2px 2px 0 0 var(--ink);
+    padding: 8px 12px;
+  }
+  .small-btn:active { transform: translate(2px,2px); box-shadow: none; }
+
+  .hint {
+    font-size: 11px;
+    color: var(--blue);
+    text-align: center;
+    margin-top: 12px;
+    line-height: 1.6;
+  }
+
+  /* ===== 결과 화면 ===== */
+  #screen-result { text-align: center; }
+  .result-title { font-family: 'Galmuri14', monospace; font-size: 22px; color: var(--blue-dark); margin: 8px 0 4px; }
+  .stars { font-size: 40px; margin: 10px 0 18px; letter-spacing: 6px; }
+  .result-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .result-grid .stat .v { font-size: 28px; }
+  .praise {
+    background: var(--yellow-soft);
+    border: 3px dashed var(--blue);
+    padding: 16px;
+    font-size: 15px;
+    color: var(--blue-dark);
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+
+  .footer-credit {
+    text-align: center;
+    font-size: 10px;
+    color: var(--blue);
+    margin-top: 22px;
+    opacity: .8;
+  }
+
+  @media (max-width: 520px) {
+    h1 { font-size: 18px; }
+    .target { font-size: 20px; }
+    .stat .v { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="scanline-top"></div>
+
+  <!-- ===== 홈 ===== -->
+  <div id="screen-home">
+    <div class="mascot">⌨️🐥</div>
+    <h1>픽셀 타자연습
+      <span class="sub">박수진창의컴퓨터학원</span>
+    </h1>
+
+    <div class="section-label">1. 언어를 골라요</div>
+    <div class="btn-row" id="lang-row">
+      <button class="pbtn active" data-lang="ko">한글 가나다</button>
+      <button class="pbtn" data-lang="en">English ABC</button>
+    </div>
+
+    <div class="section-label">2. 연습 단계를 골라요</div>
+    <div class="btn-row" id="stage-row">
+      <button class="pbtn active" data-stage="keys">자리 연습</button>
+      <button class="pbtn" data-stage="words">낱말 연습</button>
+      <button class="pbtn" data-stage="sentences">짧은 글</button>
+    </div>
+
+    <div class="section-label">3. 시작!</div>
+    <div class="btn-row">
+      <button class="pbtn big" id="start-btn">▶ 연습 시작하기</button>
+    </div>
+
+    <div class="hint">
+      한글 모드는 키보드를 <b>한글(한/영 키)</b>로 바꾼 뒤 시작하세요.<br>
+      자리 연습은 자판 위치를 익히는 단계예요. 천천히, 또박또박!
+    </div>
+  </div>
+
+  <!-- ===== 연습 ===== -->
+  <div id="screen-play">
+    <div class="hud">
+      <div class="stat"><div class="v" id="hud-speed">0</div><div class="k">속도(타/분)</div></div>
+      <div class="stat"><div class="v" id="hud-acc">100</div><div class="k">정확도(%)</div></div>
+      <div class="stat"><div class="v" id="hud-time">0</div><div class="k">시간(초)</div></div>
+      <div class="stat"><div class="v" id="hud-round">1/1</div><div class="k">진행</div></div>
+    </div>
+
+    <div class="progress-wrap"><div class="progress-bar" id="progress-bar"></div></div>
+
+    <div class="target" id="target"></div>
+    <input id="typed" type="text" autocomplete="off" autocapitalize="off"
+           autocorrect="off" spellcheck="false" placeholder="여기에 입력하세요" />
+
+    <div class="play-foot">
+      <button class="small-btn" id="quit-btn">← 그만하기</button>
+      <button class="small-btn" id="skip-btn">건너뛰기 →</button>
+    </div>
+    <div class="hint">틀려도 괜찮아요. 끝까지 입력하면 다음 문제로 넘어가요 ^^</div>
+  </div>
+
+  <!-- ===== 결과 ===== -->
+  <div id="screen-result">
+    <div class="mascot">🏆</div>
+    <div class="result-title">연습 끝!</div>
+    <div class="stars" id="result-stars">⭐⭐⭐</div>
+
+    <div class="result-grid">
+      <div class="stat"><div class="v" id="res-speed">0</div><div class="k">평균 속도(타/분)</div></div>
+      <div class="stat"><div class="v" id="res-acc">100</div><div class="k">정확도(%)</div></div>
+      <div class="stat"><div class="v" id="res-time">0</div><div class="k">걸린 시간(초)</div></div>
+      <div class="stat"><div class="v" id="res-score">0</div><div class="k">점수</div></div>
+    </div>
+
+    <div class="praise" id="res-praise"></div>
+
+    <div class="btn-row">
+      <button class="pbtn" id="again-btn">↻ 한 번 더</button>
+      <button class="pbtn" id="home-btn">🏠 처음으로</button>
+    </div>
+  </div>
+
+  <div class="footer-credit">ⓒ 박수진창의컴퓨터학원 · Pixel Typing</div>
+</div>
+
+<script>
+/* =========================================================
+   콘텐츠 데이터
+   한글 자리연습은 자모를 띄어쓰기로 분리해 IME 결합을 방지
+========================================================= */
+const DATA = {
+  ko: {
+    keys: [
+      "ㅁ ㄴ ㅇ ㄹ",
+      "ㅗ ㅓ ㅏ ㅣ",
+      "ㅂ ㅈ ㄷ ㄱ ㅅ",
+      "ㅛ ㅕ ㅑ ㅐ ㅔ",
+      "ㅋ ㅌ ㅊ ㅍ",
+      "ㅠ ㅜ ㅡ",
+      "ㅁ ㅏ ㄴ ㅓ ㅇ ㅗ",
+      "ㄱ ㅏ ㄷ ㅏ ㄹ ㅏ"
+    ],
+    words: [
+      "사과","학교","친구","컴퓨터","코딩","게임","로봇","우주",
+      "그림","음악","나무","바다","하늘","토끼","강아지","선생님",
+      "도서관","자전거","무지개","피아노","마인크래프트","로블록스","스크래치","파이썬"
+    ],
+    sentences: [
+      "오늘도 즐겁게 코딩해요.",
+      "나는 컴퓨터가 좋아요.",
+      "친구와 함께 게임을 만들어요.",
+      "한 줄씩 천천히 입력해요.",
+      "실수해도 괜찮아요.",
+      "타자가 점점 빨라져요.",
+      "꿈을 향해 한 걸음씩 나아가요.",
+      "내가 만든 프로그램이 움직였어요."
+    ]
+  },
+  en: {
+    keys: [
+      "f f j j f j f j",
+      "a s d f j k l ;",
+      "d k d k s l s l",
+      "g h g h f j d k",
+      "q w e r u i o p",
+      "z x c v m n b"
+    ],
+    words: [
+      "cat","dog","sun","run","code","game","jump","book",
+      "tree","star","fish","blue","play","kind","hero","milk",
+      "gold","ship","moon","rain","bear","robot","pixel","mouse"
+    ],
+    sentences: [
+      "I love to code.",
+      "Typing is fun.",
+      "We make games together.",
+      "Practice makes perfect.",
+      "Robots can dance and sing.",
+      "Dream big and code every day.",
+      "Hello world from our class.",
+      "Keep going, you are doing great."
+    ]
+  }
+};
+
+const STAGE_NAME = { keys: "자리 연습", words: "낱말 연습", sentences: "짧은 글" };
+
+/* =========================================================
+   상태
+========================================================= */
+let lang = "ko";
+let stage = "keys";
+let queue = [];        // 이번 세션 문제들
+let idx = 0;           // 현재 문제 번호
+let target = "";       // 현재 목표 문자열
+let startTime = null;  // 세션 시작 시각
+let totalTyped = 0;    // 총 입력 글자수(누적)
+let totalCorrect = 0;  // 총 정답 글자수(누적)
+let timerId = null;
+
+/* =========================================================
+   사운드 (WebAudio, 파일 없음)
+========================================================= */
+let audioCtx = null;
+let soundOn = true;
+function beep(freq, dur, type) {
+  if (!soundOn) return;
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.type = type || "square";
+    o.frequency.value = freq;
+    g.gain.value = 0.05;
+    o.connect(g); g.connect(audioCtx.destination);
+    o.start();
+    g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + dur);
+    o.stop(audioCtx.currentTime + dur);
+  } catch (e) {}
+}
+const sndOk    = () => beep(880, 0.05);
+const sndErr   = () => beep(160, 0.08, "sawtooth");
+const sndClear = () => { beep(660,0.08); setTimeout(()=>beep(880,0.08),90); setTimeout(()=>beep(1180,0.12),180); };
+
+/* =========================================================
+   화면 전환
+========================================================= */
+const $ = (id) => document.getElementById(id);
+function show(screen) {
+  $("screen-home").style.display   = screen === "home"   ? "block" : "none";
+  $("screen-play").style.display   = screen === "play"   ? "block" : "none";
+  $("screen-result").style.display = screen === "result" ? "block" : "none";
+}
+
+/* =========================================================
+   홈 화면 선택 버튼
+========================================================= */
+document.querySelectorAll("#lang-row .pbtn").forEach(b => {
+  b.addEventListener("click", () => {
+    document.querySelectorAll("#lang-row .pbtn").forEach(x => x.classList.remove("active"));
+    b.classList.add("active");
+    lang = b.dataset.lang;
+  });
+});
+document.querySelectorAll("#stage-row .pbtn").forEach(b => {
+  b.addEventListener("click", () => {
+    document.querySelectorAll("#stage-row .pbtn").forEach(x => x.classList.remove("active"));
+    b.classList.add("active");
+    stage = b.dataset.stage;
+  });
+});
+
+/* =========================================================
+   세션 시작
+========================================================= */
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function startSession() {
+  const pool = DATA[lang][stage];
+  const limit = stage === "sentences" ? 6 : 10;
+  queue = shuffle(pool).slice(0, Math.min(limit, pool.length));
+  idx = 0;
+  startTime = null;
+  totalTyped = 0;
+  totalCorrect = 0;
+
+  show("play");
+  loadProblem();
+  $("typed").focus();
+
+  clearInterval(timerId);
+  timerId = setInterval(updateHud, 200);
+}
+
+function loadProblem() {
+  target = queue[idx];
+  $("typed").value = "";
+  renderTarget("");
+  $("hud-round").textContent = (idx + 1) + "/" + queue.length;
+  $("progress-bar").style.width = (idx / queue.length * 100) + "%";
+  $("typed").focus();
+}
+
+/* =========================================================
+   목표 문자열 렌더링 + 색칠
+========================================================= */
+function renderTarget(typed) {
+  const el = $("target");
+  el.innerHTML = "";
+  for (let i = 0; i < target.length; i++) {
+    const span = document.createElement("span");
+    const tc = target[i];
+    span.className = "ch";
+    span.textContent = tc === " " ? "␣" : tc;
+    if (tc === " ") span.classList.add("space");
+
+    if (i < typed.length) {
+      span.classList.add(typed[i] === tc ? "ok" : "bad");
+    } else if (i === typed.length) {
+      span.classList.add("cur");
+    }
+    el.appendChild(span);
+  }
+}
+
+/* =========================================================
+   입력 처리
+========================================================= */
+$("typed").addEventListener("input", (e) => {
+  if (startTime === null) startTime = Date.now();
+  const typed = e.target.value;
+  renderTarget(typed);
+
+  // 입력이 목표 길이에 도달 + 마지막 글자까지 일치하면 완료
+  if (typed.length >= target.length) {
+    finishProblem(typed);
+  }
+});
+
+// 키 누를 때 소리 (조합 중 한글도 대략 반응)
+$("typed").addEventListener("keydown", (e) => {
+  if (e.key.length === 1) {
+    const pos = $("typed").value.length;
+    const expected = target[pos];
+    // 영어/기호는 즉시 비교, 한글 조합문자는 input에서 처리되므로 가벼운 피드백만
+    if (expected !== undefined && /[a-zA-Z0-9 ;]/.test(e.key)) {
+      e.key === expected ? sndOk() : sndErr();
+    }
+  }
+});
+
+function countCorrect(typed) {
+  let c = 0;
+  const n = Math.min(typed.length, target.length);
+  for (let i = 0; i < n; i++) if (typed[i] === target[i]) c++;
+  return c;
+}
+
+function finishProblem(typed) {
+  const correct = countCorrect(typed);
+  totalTyped += target.length;
+  totalCorrect += correct;
+
+  if (correct === target.length) sndClear(); else sndErr();
+
+  idx++;
+  $("progress-bar").style.width = (idx / queue.length * 100) + "%";
+
+  if (idx >= queue.length) {
+    endSession();
+  } else {
+    loadProblem();
+  }
+}
+
+/* =========================================================
+   HUD (실시간 통계)
+========================================================= */
+function elapsedSec() {
+  if (startTime === null) return 0;
+  return (Date.now() - startTime) / 1000;
+}
+function curStats() {
+  const sec = elapsedSec();
+  const typedNow = $("typed").value;
+  const liveTyped = totalTyped + typedNow.length;
+  const liveCorrect = totalCorrect + countCorrect(typedNow);
+  const speed = sec > 0 ? Math.round(liveCorrect / sec * 60) : 0;
+  const acc = liveTyped > 0 ? Math.round(liveCorrect / liveTyped * 100) : 100;
+  return { sec, speed, acc, liveCorrect };
+}
+function updateHud() {
+  const s = curStats();
+  $("hud-speed").textContent = s.speed;
+  $("hud-acc").textContent = s.acc;
+  $("hud-time").textContent = Math.floor(s.sec);
+}
+
+/* =========================================================
+   세션 종료 + 결과
+========================================================= */
+function endSession() {
+  clearInterval(timerId);
+  const sec = elapsedSec();
+  const speed = sec > 0 ? Math.round(totalCorrect / sec * 60) : 0;
+  const acc = totalTyped > 0 ? Math.round(totalCorrect / totalTyped * 100) : 100;
+  // 점수: 속도 + 정확도 가중
+  const score = Math.round(speed * (acc / 100) * 1.5);
+
+  // 별점
+  let stars = 1;
+  if (acc >= 80 && speed >= 80) stars = 2;
+  if (acc >= 90 && speed >= 150) stars = 3;
+  if (acc >= 95 && speed >= 220) stars = 3;
+
+  $("res-speed").textContent = speed;
+  $("res-acc").textContent = acc;
+  $("res-time").textContent = Math.floor(sec);
+  $("res-score").textContent = score;
+  $("result-stars").textContent = "⭐".repeat(stars) + "☆".repeat(3 - stars);
+
+  let praise;
+  if (acc >= 95)      praise = "정확도가 정말 높아요! 한 글자도 놓치지 않았네요. 다음엔 속도에 도전해 볼까요?";
+  else if (acc >= 85) praise = "잘했어요! 조금만 더 또박또박 치면 만점도 가능해요.";
+  else                praise = "끝까지 해낸 게 멋져요. 천천히 정확하게 다시 한 번 해볼까요?";
+  $("res-praise").textContent =
+    `[${lang === "ko" ? "한글" : "영어"} · ${STAGE_NAME[stage]}] ` + praise;
+
+  sndClear();
+  show("result");
+}
+
+/* =========================================================
+   버튼
+========================================================= */
+$("start-btn").addEventListener("click", () => { if(!audioCtx){try{audioCtx=new(window.AudioContext||window.webkitAudioContext)();}catch(e){}} startSession(); });
+$("skip-btn").addEventListener("click", () => {
+  totalTyped += target.length; // 건너뛴 만큼 입력수에 반영(정답은 0)
+  idx++;
+  $("progress-bar").style.width = (idx / queue.length * 100) + "%";
+  if (idx >= queue.length) endSession(); else loadProblem();
+});
+$("quit-btn").addEventListener("click", () => { clearInterval(timerId); show("home"); });
+$("again-btn").addEventListener("click", startSession);
+$("home-btn").addEventListener("click", () => show("home"));
+
+// 엔터로도 다음 문제(짧은 글에서 편하게)
+$("typed").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    const typed = $("typed").value;
+    if (typed.length > 0) finishProblem(typed);
+    e.preventDefault();
+  }
+});
+
+show("home");
+</script>
+</body>
+</html>
