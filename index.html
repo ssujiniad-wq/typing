@@ -330,21 +330,34 @@ function initStorage() {
     }
   } catch (e) { fbDB = null; }
 }
-function saveScore(rec) {
-  if (fbDB) { try { return fbDB.ref('scores').push(rec); } catch(e){} }
+/* ② 학원 기록장 앱 연동 — 점수는 기록장(record.sujincom.workers.dev)에 저장되고
+   랭킹도 거기서 불러와 모든 PC가 같은 랭킹을 봅니다. 연결이 안 되면 이 PC에만 저장. */
+const RECORD_API = "https://record.sujincom.workers.dev";
+let lastRecordReply = null;
+function saveLocal(rec) {
   const a = JSON.parse(localStorage.getItem('tp_scores') || '[]');
   a.push(rec);
   localStorage.setItem('tp_scores', JSON.stringify(a.slice(-2000)));
-  return Promise.resolve();
+}
+function saveScore(rec) {
+  saveLocal(rec);
+  if (fbDB) { try { fbDB.ref('scores').push(rec); } catch(e){} }
+  return fetch(RECORD_API + "/api/typing/practice", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(rec) })
+    .then(r => r.json()).then(j => { lastRecordReply = j; return j; })
+    .catch(() => { lastRecordReply = null; return null; });
 }
 function loadScores(cb) {
-  if (fbDB) {
-    fbDB.ref('scores').once('value')
-      .then(s => cb(Object.values(s.val() || {})))
-      .catch(() => cb(JSON.parse(localStorage.getItem('tp_scores') || '[]')));
-  } else {
-    cb(JSON.parse(localStorage.getItem('tp_scores') || '[]'));
-  }
+  fetch(RECORD_API + "/api/typing/scores?days=7").then(r => r.json()).then(j => {
+    if (j && j.ok && Array.isArray(j.rows)) cb(j.rows); else throw new Error("bad");
+  }).catch(() => {
+    if (fbDB) {
+      fbDB.ref('scores').once('value')
+        .then(s => cb(Object.values(s.val() || {})))
+        .catch(() => cb(JSON.parse(localStorage.getItem('tp_scores') || '[]')));
+    } else {
+      cb(JSON.parse(localStorage.getItem('tp_scores') || '[]'));
+    }
+  });
 }
 
 /* =========================================================
@@ -1049,10 +1062,12 @@ function endSession() {
   // 랭킹 저장 (타자검정은 지문 제목도 함께)
   const rec = { name: playerName, lang, stage, speed, acc, score, ts: Date.now() };
   if (timed && currentPassageTitle) rec.passage = currentPassageTitle;
-  saveScore(rec);
-  $("res-save").textContent = fbDB
-    ? "✅ 학원 랭킹에 점수가 저장됐어요!"
-    : "✅ 점수가 저장됐어요! (이번 주 랭킹에서 확인)";
+  $("res-save").textContent = "저장 중…";
+  saveScore(rec).then(j => {
+    if (j && j.ok && j.matched) $("res-save").textContent = "✅ " + j.name + " 기록장에 저장됐어요!" + (j.best ? " (오늘 최고 " + j.best + "타)" : "");
+    else if (j && j.ok && !j.matched) $("res-save").textContent = "✅ 랭킹에는 올라갔어요. 기록장에 이 이름이 없어요 — 선생님께 확인!";
+    else $("res-save").textContent = "✅ 점수가 저장됐어요! (이번 주 랭킹에서 확인)";
+  });
 
   sndClear();
   show("result");
