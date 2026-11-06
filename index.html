@@ -174,7 +174,7 @@
   #screen-rank .rank-head { text-align: center; }
   .rank-title { font-family: 'Galmuri14', monospace; font-size: 22px; color: var(--blue-dark); margin: 8px 0 2px; }
   .rank-sub { font-size: 11px; color: var(--blue); margin-bottom: 16px; }
-  .rank-mode { font-size: 11px; color: var(--blue-dark); text-align:center; margin-bottom: 12px; }
+  .rank-mode { font-size: 11px; color: var(--blue-dark); text-align:center; margin: 12px 0; }
   .rank-list { border: 3px solid var(--ink); background: #fff; max-height: 420px; overflow-y: auto; }
   .rank-row { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-bottom: 2px solid #e6e9f2; font-size: 14px; }
   .rank-row:last-child { border-bottom: none; }
@@ -189,6 +189,68 @@
   .storage-badge { text-align:center; font-size: 10px; margin-top: 10px; }
   .badge-local { color: #b06b00; }
   .badge-shared { color: var(--green); }
+
+  /* 단계 선택 (자리·낱말) */
+  #step-wrap { display: none; }
+  .step-row { display: flex; gap: 6px; flex-wrap: wrap; }
+  .step-row .pbtn { flex: 1 1 0; min-width: 44px; padding: 10px 4px; font-size: 13px; }
+  .step-desc { font-size: 11px; color: var(--blue-dark); background: var(--yellow-soft); border: 2px dashed var(--blue); padding: 8px 10px; margin-top: 8px; line-height: 1.6; }
+
+  /* 화면 키보드 */
+  .kbd { margin-top: 14px; background: #fff; border: 3px solid var(--ink); padding: 10px 8px 8px; user-select: none; }
+  .kbd-row { display: flex; justify-content: center; gap: 4px; margin-bottom: 4px; }
+  .key {
+    width: 36px; height: 34px; border: 2px solid var(--ink); background: #f7f8fc; color: var(--ink);
+    font-family: 'Galmuri9', monospace; font-size: 11px; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; line-height: 1; position: relative; box-shadow: 2px 2px 0 0 #c9cfdd;
+  }
+  .key .ko { font-family: 'Galmuri11', monospace; font-size: 13px; }
+  .key .en { font-size: 9px; color: #6b7385; margin-top: 2px; }
+  .key.wide { width: 64px; } .key.space { width: 220px; }
+  .key.f-l5, .key.f-r5 { border-bottom-color: #d96fb3; }
+  .key.f-l4, .key.f-r4 { border-bottom-color: #8e6ad9; }
+  .key.f-l3, .key.f-r3 { border-bottom-color: #3f8fe6; }
+  .key.f-l2, .key.f-r2 { border-bottom-color: #2bb673; }
+  .key.f-l5::after, .key.f-l4::after, .key.f-l3::after, .key.f-l2::after, .key.f-r2::after, .key.f-r3::after, .key.f-r4::after, .key.f-r5::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: inherit;
+  }
+  .key.f-l5::after, .key.f-r5::after { background: #d96fb3; }
+  .key.f-l4::after, .key.f-r4::after { background: #8e6ad9; }
+  .key.f-l3::after, .key.f-r3::after { background: #3f8fe6; }
+  .key.f-l2::after, .key.f-r2::after { background: #2bb673; }
+  .key.next { background: var(--yellow); box-shadow: 0 0 0 3px var(--blue-dark); transform: translateY(-2px); z-index: 1; }
+  .key.next-shift { background: #ffe9a8; box-shadow: 0 0 0 2px var(--blue-dark); }
+  .kbd-hint { text-align: center; font-size: 11px; color: var(--blue-dark); margin-top: 6px; min-height: 16px; }
+  .kbd-hint b { color: var(--red); font-size: 14px; }
+  .kbd-legend { display: flex; justify-content: center; gap: 10px; font-size: 9px; color: #6b7385; margin-top: 6px; flex-wrap: wrap; }
+  .kbd-legend span::before { content: ""; display: inline-block; width: 10px; height: 6px; margin-right: 3px; vertical-align: middle; }
+  .kbd-legend .l5::before { background: #d96fb3; } .kbd-legend .l4::before { background: #8e6ad9; }
+  .kbd-legend .l3::before { background: #3f8fe6; } .kbd-legend .l2::before { background: #2bb673; }
+  @media (max-width: 560px) { .key { width: 26px; height: 30px; } .key.wide { width: 44px; } .key.space { width: 140px; } .key .ko { font-size: 11px; } .key .en { display: none; } }
+
+  /* 결과: 내 기록 · 그래프 · 주간 목표 · 오타 */
+  .res-box { background: #fff; border: 3px solid var(--ink); padding: 12px 14px; margin-bottom: 12px; text-align: left; }
+  .res-box .ttl { font-size: 11px; color: var(--blue); margin-bottom: 8px; border-left: 4px solid var(--yellow); padding-left: 6px; }
+  .res-best { font-size: 14px; line-height: 1.7; color: var(--blue-dark); }
+  .res-best .new { color: var(--red); font-family: 'Galmuri14', monospace; }
+  .chart { display: flex; align-items: flex-end; gap: 6px; height: 90px; padding: 4px 2px 0; border-bottom: 2px solid var(--ink); }
+  .chart .bar { flex: 1 1 0; max-width: 72px; background: repeating-linear-gradient(0deg, var(--blue) 0 6px, #3b63e0 6px 12px); border: 2px solid var(--ink); border-bottom: none; position: relative; min-height: 4px; }
+  .chart .bar.now { background: repeating-linear-gradient(0deg, var(--yellow) 0 6px, #ffe588 6px 12px); }
+  .chart .bar .v { position: absolute; top: -16px; left: 0; right: 0; text-align: center; font-size: 10px; color: var(--blue-dark); }
+  .chart-x { display: flex; gap: 6px; margin-top: 4px; }
+  .chart-x div { flex: 1 1 0; max-width: 72px; text-align: center; font-size: 9px; color: #6b7385; }
+  .goal-bar { display: flex; gap: 4px; margin-top: 6px; }
+  .goal-bar div { flex: 1 1 0; height: 14px; border: 2px solid var(--ink); background: #fff; }
+  .goal-bar div.on { background: var(--green); }
+  .goal-txt { font-size: 12px; color: var(--blue-dark); line-height: 1.6; }
+  .miss-list { display: flex; gap: 8px; flex-wrap: wrap; }
+  .miss-chip { background: #ffe1e2; border: 2px solid var(--red); padding: 4px 8px; font-size: 14px; color: var(--ink); }
+  .miss-chip small { font-size: 10px; color: var(--red); }
+
+  /* 랭킹 기간 */
+  .rank-period { display: flex; gap: 8px; margin: 12px 0 8px; }
+  .rank-period .pbtn { font-size: 12px; padding: 8px 10px; }
+  .rank-row .cnt { font-size: 9px; color: #6b7385; margin-left: 6px; }
 
   .footer-credit { text-align: center; font-size: 10px; color: var(--blue); margin-top: 22px; opacity: .8; }
 
@@ -224,6 +286,11 @@
       <button class="pbtn" data-stage="sentences">짧은 글</button>
       <button class="pbtn" data-stage="timed5">⏱ 타자검정</button>
     </div>
+    <div id="step-wrap">
+      <div class="section-label" id="step-label">몇 단계를 할까요?</div>
+      <div class="step-row" id="step-row"></div>
+      <div class="step-desc" id="step-desc"></div>
+    </div>
 
     <div class="section-label">4. 시작!</div>
     <div class="btn-row">
@@ -235,7 +302,8 @@
 
     <div class="hint">
       한글 모드는 키보드를 <b>한글(한/영 키)</b>로 바꾼 뒤 시작하세요.<br>
-      타자검정은 지문을 골라 <b>5분 동안</b> 속도(타/분)와 정확도를 측정해요. 결과는 랭킹에 올라가요!
+      자리·낱말 연습은 화면 키보드가 <b>다음에 누를 키와 손가락</b>을 알려줘요.<br>
+      타자검정은 지문을 골라 <b>5분 동안</b> 속도(타/분)와 정확도를 측정해요. 결과는 랭킹과 내 기록장에 올라가요!
     </div>
   </div>
 
@@ -261,6 +329,11 @@
     <div class="target" id="target"></div>
     <input id="typed" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="여기에 입력하세요" />
     <textarea id="typed-area" rows="4" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="위 글을 보고 이어서 입력하세요 (줄 끝에서는 띄어쓰기 또는 Enter)"></textarea>
+    <div class="kbd" id="kbd">
+      <div id="kbd-keys"></div>
+      <div class="kbd-hint" id="kbd-hint"></div>
+      <div class="kbd-legend"><span class="l5">새끼</span><span class="l4">약지</span><span class="l3">중지</span><span class="l2">검지</span><span>· 왼손 ← 가운데(ㅎ/ㅗ · G/H) → 오른손</span></div>
+    </div>
     <div class="play-foot">
       <button class="small-btn" id="quit-btn">← 그만하기</button>
       <button class="small-btn" id="skip-btn">건너뛰기 →</button>
@@ -281,6 +354,10 @@
     </div>
     <div class="praise" id="res-praise"></div>
     <div class="save-note" id="res-save"></div>
+    <div class="res-box" id="res-best-box" style="display:none;"><div class="ttl">📈 내 기록</div><div class="res-best" id="res-best"></div></div>
+    <div class="res-box" id="res-chart-box" style="display:none;"><div class="ttl" id="res-chart-ttl">최근 기록 (타/분)</div><div class="chart" id="res-chart"></div><div class="chart-x" id="res-chart-x"></div></div>
+    <div class="res-box" id="res-goal-box" style="display:none;"><div class="ttl">🎯 이번 주 목표</div><div class="goal-txt" id="res-goal"></div><div class="goal-bar" id="res-goal-bar"></div></div>
+    <div class="res-box" id="res-miss-box" style="display:none;"><div class="ttl">🔍 자주 틀린 글자</div><div class="miss-list" id="res-miss"></div></div>
     <div class="btn-row">
       <button class="pbtn" id="again-btn">↻ 한 번 더</button>
       <button class="pbtn" id="result-rank-btn">🏆 랭킹</button>
@@ -291,8 +368,13 @@
   <!-- ===== 랭킹 ===== -->
   <div id="screen-rank">
     <div class="rank-head">
-      <div class="rank-title">🏆 이번 주 랭킹</div>
-      <div class="rank-sub">최근 7일 기록 · 점수 높은 순</div>
+      <div class="rank-title" id="rank-title">🏆 이번 주 랭킹</div>
+      <div class="rank-sub" id="rank-sub">최근 7일 기록 · 점수 높은 순 · 한 사람당 최고 기록 하나</div>
+    </div>
+    <div class="rank-period" id="rank-period">
+      <button class="pbtn" data-d="1">오늘</button>
+      <button class="pbtn active" data-d="7">이번 주</button>
+      <button class="pbtn" data-d="30">이번 달</button>
     </div>
     <div class="btn-row" id="rank-filter">
       <button class="pbtn active" data-f="all">전체</button>
@@ -346,10 +428,12 @@ function saveScore(rec) {
     .then(r => r.json()).then(j => { lastRecordReply = j; return j; })
     .catch(() => { lastRecordReply = null; return null; });
 }
-function loadScores(cb) {
-  fetch(RECORD_API + "/api/typing/scores?days=7").then(r => r.json()).then(j => {
-    if (j && j.ok && Array.isArray(j.rows)) cb(j.rows); else throw new Error("bad");
+let scoresShared = false; // 마지막 랭킹이 기록장 서버에서 왔는지
+function loadScores(cb, days) {
+  fetch(RECORD_API + "/api/typing/scores?days=" + (days || 7)).then(r => r.json()).then(j => {
+    if (j && j.ok && Array.isArray(j.rows)) { scoresShared = true; cb(j.rows); } else throw new Error("bad");
   }).catch(() => {
+    scoresShared = false;
     if (fbDB) {
       fbDB.ref('scores').once('value')
         .then(s => cb(Object.values(s.val() || {})))
@@ -363,10 +447,52 @@ function loadScores(cb) {
 /* =========================================================
    ② 콘텐츠 데이터
 ========================================================= */
+/* 자리·낱말 연습 단계 (한컴타자연습 단계 수에 맞춤: 한글 8단계, 영어 6단계)
+   t: 단계 이름, d: 설명, items: 문제 10개 */
+const STEPS = {
+  ko: {
+    keys: [
+      { t: "기본 자리", d: "가운뎃줄 · ㅁ ㄴ ㅇ ㄹ ㅎ · ㅗ ㅓ ㅏ ㅣ", items: ["ㅁ ㄴ ㅇ ㄹ","ㅗ ㅓ ㅏ ㅣ","ㅎ ㅗ ㅓ ㅏ","ㄹ ㅇ ㄴ ㅁ","ㅣ ㅏ ㅓ ㅗ","ㅁ ㅏ ㄴ ㅓ","ㅇ ㅗ ㄹ ㅣ","ㅎ ㅏ ㅁ ㅣ","ㄴ ㅗ ㄹ ㅓ","ㅇ ㅏ ㅇ ㅣ"] },
+      { t: "기본 자리 글자", d: "가운뎃줄만으로 글자 만들기 · 마 나 아 라 하", items: ["마 나 아 라","머 너 어 러","미 니 이 리","모 노 오 로","하 허 히 호","나라 아이","이마 오리","하나 나이","어머니 아마","오라 미나"] },
+      { t: "윗줄 자리", d: "ㅂ ㅈ ㄷ ㄱ ㅅ · ㅛ ㅕ ㅑ ㅐ ㅔ", items: ["ㅂ ㅈ ㄷ ㄱ ㅅ","ㅛ ㅕ ㅑ ㅐ ㅔ","ㅅ ㄱ ㄷ ㅈ ㅂ","ㅔ ㅐ ㅑ ㅕ ㅛ","ㅂ ㅏ ㅈ ㅓ","ㄷ ㅗ ㄱ ㅣ","ㅅ ㅐ ㅅ ㅔ","ㅂ ㅛ ㅈ ㅕ","ㄱ ㅑ ㄷ ㅐ","ㅅ ㅏ ㅂ ㅣ"] },
+      { t: "윗줄 글자", d: "윗줄 + 가운뎃줄 글자 · 바 자 다 가 사", items: ["바 자 다 가 사","비 지 디 기 시","보 조 도 고 소","배 제 대 개 새","벼 져 뎌 겨 셔","가게 다리","사자 바다","기지 소비","개 새 배 세","고기 두부"] },
+      { t: "아랫줄 자리", d: "ㅋ ㅌ ㅊ ㅍ · ㅠ ㅜ ㅡ", items: ["ㅋ ㅌ ㅊ ㅍ","ㅠ ㅜ ㅡ","ㅍ ㅊ ㅌ ㅋ","ㅡ ㅜ ㅠ","ㅋ ㅜ ㅌ ㅡ","ㅊ ㅠ ㅍ ㅜ","ㅋ ㅡ ㅊ ㅜ","ㅌ ㅠ ㅍ ㅡ","ㅋ ㅋ ㅌ ㅌ","ㅊ ㅊ ㅍ ㅍ"] },
+      { t: "아랫줄 글자", d: "아랫줄 글자 · 쿠 투 추 푸 · 크 트 츠 프", items: ["쿠 투 추 푸","크 트 츠 프","큐 튜 츄 퓨","코 토 초 포","키 티 치 피","추수 투수","크기 트럭","치즈 피자","포도 파도","키위 튜브"] },
+      { t: "쌍자음·겹모음", d: "Shift 누르고 · ㅃ ㅉ ㄸ ㄲ ㅆ · ㅒ ㅖ", items: ["ㅃ ㅉ ㄸ ㄲ ㅆ","ㅒ ㅖ ㅒ ㅖ","빠 짜 따 까 싸","뿌 쭈 뚜 꾸 쑤","예 얘 계 쟤","까치 꼬마","빨리 뽀뽀","따로 떡","쓰기 싸움","짜다 쭉"] },
+      { t: "받침 종합", d: "받침 있는 글자 · 강 산 달 밤 · 책 꽃 앞", items: ["강 산 달 밤","책 꽃 앞 옆","감 곰 굼 금","말 물 몸 맘","학교 선생님","컴퓨터 책상","한글 타자","박수 창의","빵 떡 쑥 짝","잠 꿈 별 밤"] }
+    ],
+    words: [
+      { t: "받침 없는 두 글자", d: "나라 · 우리 · 바다", items: ["나라","우리","아이","오리","나무","바다","사자","기차","모자","노래"] },
+      { t: "받침 없는 세 글자", d: "바나나 · 코끼리 · 무지개", items: ["바나나","코끼리","두루미","고구마","도토리","사다리","이야기","소나기","무지개","개구리"] },
+      { t: "받침 있는 두 글자", d: "학교 · 친구 · 연필", items: ["학교","친구","공책","연필","책상","운동","달님","산책","밥상","양말"] },
+      { t: "받침 있는 세 글자", d: "선생님 · 컴퓨터 · 강아지", items: ["선생님","도서관","자전거","컴퓨터","강아지","냉장고","놀이터","운동장","병아리","할머니"] },
+      { t: "쌍자음·겹모음 낱말", d: "빨강 · 까치 · 떡볶이", items: ["빨강","까치","떡볶이","쓰레기","예쁘다","얘기","짜장면","꼬마","꿀벌","쌍둥이"] },
+      { t: "코딩 낱말", d: "코딩 · 변수 · 스크래치 · 파이썬", items: ["코딩","로봇","게임","블록","변수","반복","조건","함수","스크래치","파이썬","로블록스","마인크래프트"] },
+      { t: "긴 낱말", d: "아이스크림 · 엘리베이터 · 인공지능", items: ["아이스크림","텔레비전","미끄럼틀","해바라기","엘리베이터","인공지능","프로그램","키보드","마우스","자격증"] },
+      { t: "두 낱말 띄어쓰기", d: "맑은 하늘 · 즐거운 코딩", items: ["맑은 하늘","푸른 바다","즐거운 코딩","우리 학원","신나는 게임","작은 로봇","귀여운 강아지","똑똑한 친구","빠른 타자","멋진 작품"] }
+    ]
+  },
+  en: {
+    keys: [
+      { t: "Home row", d: "기본 자리 · a s d f · j k l ;", items: ["a s d f","j k l ;","f j d k","s l a ;","a s d f j k l ;","f f j j","d d k k","s s l l","a a ; ;","f j f j d k d k"] },
+      { t: "Home row + G H", d: "검지 옆 · g h", items: ["g h g h","f g h j","a g h ;","d g h k","s g h l","glad hall","fads lads","gas had","dash fall","half flag"] },
+      { t: "Top row", d: "윗줄 · q w e r t · y u i o p", items: ["q w e r t","y u i o p","e r u i","q w o p","t y t y","w e r t y","u i o p","r e w q","p o i u y","q w e r t y u i o p"] },
+      { t: "Bottom row", d: "아랫줄 · z x c v b · n m , . /", items: ["z x c v b","n m , . /","c v b n m","z x . /","v b n m","x c v b","m n b v c","z z x x","c c v v","b n m , ."] },
+      { t: "Capital letters", d: "Shift 누르고 대문자 · A B C", items: ["A S D F","J K L","Hi Ok","Yes No","Aa Bb Cc","Mr Ms Dr","USA KOR","AI PC TV","My Name","Dd Ff Jj"] },
+      { t: "Numbers & symbols", d: "숫자줄 · 1 2 3 · + - = ( )", items: ["1 2 3 4 5","6 7 8 9 0","1 + 2 = 3","10 - 4 = 6","3 * 3 = 9","8 / 2 = 4","a@b.com","100%","(1, 2)","x = 5"] }
+    ],
+    words: [
+      { t: "Home row words", d: "기본 자리로만 · dad sad all", items: ["dad","sad","add","all","fall","lad","ask","flask","salad","hall"] },
+      { t: "3 letters", d: "cat · dog · sun", items: ["cat","dog","sun","run","cup","pen","bus","hat","red","big"] },
+      { t: "4 letters", d: "code · game · star", items: ["code","game","jump","book","tree","star","fish","blue","play","kind","milk","gold"] },
+      { t: "5 letters", d: "robot · pixel · apple", items: ["robot","pixel","mouse","apple","happy","water","music","smile","bread","house"] },
+      { t: "Coding words", d: "print · input · python", items: ["print","input","while","loop","block","click","sprite","python","scratch","repeat","variable","function"] },
+      { t: "Capitals & marks", d: "Hello · World! · Mr. Kim", items: ["Hello","World!","Python","I am OK.","Yes!","Mr. Kim","A.I.","100%","Let's go","1 + 1 = 2"] }
+    ]
+  }
+};
 const DATA = {
   ko: {
-    keys: ["ㅁ ㄴ ㅇ ㄹ","ㅗ ㅓ ㅏ ㅣ","ㅂ ㅈ ㄷ ㄱ ㅅ","ㅛ ㅕ ㅑ ㅐ ㅔ","ㅋ ㅌ ㅊ ㅍ","ㅠ ㅜ ㅡ","ㅁ ㅏ ㄴ ㅓ ㅇ ㅗ","ㄱ ㅏ ㄷ ㅏ ㄹ ㅏ"],
-    words: ["사과","학교","친구","컴퓨터","코딩","게임","로봇","우주","그림","음악","나무","바다","하늘","토끼","강아지","선생님","도서관","자전거","무지개","피아노","마인크래프트","로블록스","스크래치","파이썬"],
     sentences: ["오늘도 즐겁게 코딩해요.","나는 컴퓨터가 좋아요.","친구와 함께 게임을 만들어요.","한 줄씩 천천히 입력해요.","실수해도 괜찮아요.","타자가 점점 빨라져요.","꿈을 향해 한 걸음씩 나아가요.","내가 만든 프로그램이 움직였어요."],
     timed5: [
       { icon: "🇰🇷", title: "애국가", desc: "1절 ~ 4절 전곡", lines: [
@@ -568,12 +694,34 @@ const DATA = {
         "오늘 내가 만든 작은 코드 한 줄이",
         "미래의 큰 문을 여는 열쇠가 됩니다",
         "꿈을 향해 한 걸음씩 나아가 봐요"
+      ] },
+      { icon: "📚", title: "교과서 문장 연습", desc: "초등 국어 · 띄어쓰기와 문장 부호", lines: [
+        "오늘 아침에는 해가 일찍 떠올랐습니다.",
+        "우리 반 친구들은 운동장에서 줄넘기를 했습니다.",
+        "\"같이 놀래?\" 하고 민호가 물었습니다.",
+        "나는 고개를 끄덕이며 웃었습니다.",
+        "점심시간에는 급식실에서 카레를 먹었습니다.",
+        "선생님께서 책을 읽어 주시자 교실이 조용해졌습니다.",
+        "비가 그치고 나니 하늘에 무지개가 떴습니다.",
+        "집에 가는 길에 길고양이 한 마리를 보았습니다.",
+        "일기장에 오늘 있었던 일을 차근차근 적었습니다.",
+        "내일은 어떤 하루가 기다리고 있을까요?"
+      ] },
+      { icon: "🧩", title: "코딩 용어 사전", desc: "변수 · 반복 · 조건 · 함수", lines: [
+        "변수는 값을 담아 두는 이름표가 있는 상자입니다.",
+        "반복문은 같은 일을 여러 번 하라는 명령입니다.",
+        "조건문은 만약에 그렇다면 이렇게 하라는 약속입니다.",
+        "함수는 자주 쓰는 명령을 하나로 묶어 이름을 붙인 것입니다.",
+        "입력은 사용자가 컴퓨터에게 알려 주는 값입니다.",
+        "출력은 컴퓨터가 화면에 보여 주는 결과입니다.",
+        "순서도는 일의 차례를 그림으로 그린 것입니다.",
+        "오류가 나면 당황하지 말고 한 줄씩 다시 읽습니다.",
+        "알고리즘은 문제를 푸는 순서를 정리한 것입니다.",
+        "디버깅은 프로그램의 잘못된 곳을 찾아 고치는 일입니다."
       ] }
     ]
   },
   en: {
-    keys: ["f f j j f j f j","a s d f j k l ;","d k d k s l s l","g h g h f j d k","q w e r u i o p","z x c v m n b"],
-    words: ["cat","dog","sun","run","code","game","jump","book","tree","star","fish","blue","play","kind","hero","milk","gold","ship","moon","rain","bear","robot","pixel","mouse"],
     sentences: ["I love to code.","Typing is fun.","We make games together.","Practice makes perfect.","Robots can dance and sing.","Dream big and code every day.","Hello world from our class.","Keep going, you are doing great."],
     timed5: [
       { icon: "🦊", title: "Pangram & Coding", desc: "타자 빠르기 점검", lines: [
@@ -750,6 +898,30 @@ const DATA = {
         "We have come to dedicate a portion of that field",
         "as a final resting place for those who here gave their lives",
         "that that nation might live"
+      ] },
+      { icon: "🐍", title: "Python First Steps", desc: "코드 치기 · 괄호와 따옴표 · 영문 자판", lines: [
+        "print(\"Hello, world!\")",
+        "name = input(\"What is your name? \")",
+        "print(\"Nice to meet you,\", name)",
+        "for i in range(5):",
+        "    print(i * 2)",
+        "cookies = 4",
+        "while cookies > 0:",
+        "    cookies = cookies - 1",
+        "if cookies == 0:",
+        "    print(\"All gone!\")"
+      ] },
+      { icon: "🧱", title: "Scratch & Roblox Words", desc: "블록 이름 · 스튜디오 용어", lines: [
+        "when green flag clicked",
+        "move 10 steps and turn 15 degrees",
+        "repeat 10 times forever if then else",
+        "say Hello for 2 seconds",
+        "set score to 0 and change score by 1",
+        "broadcast message and wait",
+        "Roblox Studio uses Lua scripts",
+        "local part = Instance.new(\"Part\")",
+        "part.Position = Vector3.new(0, 10, 0)",
+        "game.Workspace Players Explorer Properties"
       ] }
     ]
   }
@@ -771,6 +943,13 @@ let timerId = null, ended = false;
 let passageLines = [], lineIdx = 0, doneTyped = [];
 let selectedPassageIdx = null; // 타자검정에서 사용자가 고른 지문 인덱스
 let currentPassageTitle = "";  // 결과/랭킹에 함께 남기는 지문 제목
+// 자리·낱말 연습 단계 (언어·종목별로 마지막 선택 기억)
+let stepSel = { ko: { keys: 1, words: 1 }, en: { keys: 1, words: 1 } };
+try { Object.assign(stepSel, JSON.parse(localStorage.getItem('tp_steps') || '{}')); } catch (e) {}
+function curStep() { return (stage === "keys" || stage === "words") ? (stepSel[lang][stage] || 1) : 0; }
+function stepInfo() { return curStep() ? STEPS[lang][stage][curStep() - 1] : null; }
+// 오타 집계 (문제마다 목표 글자 기준으로 틀린 글자 수 세기)
+let missCount = {};
 
 function activeInputEl() { return document.getElementById("typed"); }
 function countCorrectStr(typed, tgt) {
@@ -810,15 +989,38 @@ const sndClear = () => { beep(660,0.08); setTimeout(()=>beep(880,0.08),90); setT
 document.querySelectorAll("#lang-row .pbtn").forEach(b => b.addEventListener("click", () => {
   document.querySelectorAll("#lang-row .pbtn").forEach(x => x.classList.remove("active"));
   b.classList.add("active"); lang = b.dataset.lang;
+  selectedPassageIdx = null; // 언어 바뀌면 지문 선택 초기화
+  renderStepRow();
 }));
 document.querySelectorAll("#stage-row .pbtn").forEach(b => b.addEventListener("click", () => {
   document.querySelectorAll("#stage-row .pbtn").forEach(x => x.classList.remove("active"));
   b.classList.add("active"); stage = b.dataset.stage;
   selectedPassageIdx = null; // 단계 바뀌면 지문 선택 초기화
+  renderStepRow();
 }));
-document.querySelectorAll("#lang-row .pbtn").forEach(b => b.addEventListener("click", () => {
-  selectedPassageIdx = null; // 언어 바뀌면 지문 선택 초기화
-}));
+// 자리·낱말 연습일 때만 단계 버튼 표시 (한글 8단계 · 영어 6단계)
+function renderStepRow() {
+  const wrap = $("step-wrap");
+  if (stage !== "keys" && stage !== "words") { wrap.style.display = "none"; return; }
+  wrap.style.display = "block";
+  const list = STEPS[lang][stage];
+  if (stepSel[lang][stage] > list.length) stepSel[lang][stage] = 1;
+  $("step-label").textContent = (stage === "keys" ? "자리 연습" : "낱말 연습") + " · 몇 단계를 할까요?";
+  const row = $("step-row"); row.innerHTML = "";
+  list.forEach((s, i) => {
+    const b = document.createElement("button");
+    b.className = "pbtn" + (i + 1 === stepSel[lang][stage] ? " active" : "");
+    b.textContent = (i + 1) + "단계";
+    b.addEventListener("click", () => {
+      stepSel[lang][stage] = i + 1;
+      localStorage.setItem('tp_steps', JSON.stringify(stepSel));
+      renderStepRow();
+    });
+    row.appendChild(b);
+  });
+  const s = list[stepSel[lang][stage] - 1];
+  $("step-desc").innerHTML = "<b>" + stepSel[lang][stage] + "단계 · " + escapeHtml(s.t) + "</b><br>" + escapeHtml(s.d);
+}
 
 // 최근 이름 datalist 채우기
 function refreshRecentNames() {
@@ -854,7 +1056,7 @@ function startSession() {
   // 타자검정인데 아직 지문을 안 골랐다면 → 선택 화면으로
   if (timed && selectedPassageIdx === null) { openPassageSelect(); return; }
 
-  const pool = DATA[lang][stage];
+  const pool = (stage === "keys" || stage === "words") ? STEPS[lang][stage][curStep() - 1].items : DATA[lang][stage];
   if (timed) {
     // 한 세션 = 고른 지문 한 편 (5분 동안 측정, 다 치면 그때 종료)
     const p = pool[selectedPassageIdx];
@@ -865,7 +1067,10 @@ function startSession() {
     const limit = stage === "sentences" ? 6 : 10;
     queue = shuffle(pool).slice(0, Math.min(limit, pool.length));
   }
-  idx = 0; startTime = null; totalTyped = 0; totalCorrect = 0; ended = false;
+  idx = 0; startTime = null; totalTyped = 0; totalCorrect = 0; ended = false; missCount = {};
+  // 화면 키보드: 자리·낱말·짧은 글에서 표시 (타자검정은 지문이 길어 숨김)
+  $("kbd").style.display = timed ? "none" : "block";
+  if (!timed) buildKeyboard();
 
   // HUD 시간 라벨 (입력칸은 항상 한 줄)
   $("hud-time-k").textContent = timed ? "남은 시간" : "시간(초)";
@@ -881,6 +1086,97 @@ function startSession() {
   timerId = setInterval(tick, 200);
 }
 
+/* =========================================================
+   ⑥-1 화면 키보드 (다음에 누를 키 + 손가락 색)
+========================================================= */
+const KBD_ROWS = [
+  ["1","2","3","4","5","6","7","8","9","0","-","="],
+  ["q","w","e","r","t","y","u","i","o","p"],
+  ["a","s","d","f","g","h","j","k","l",";","'"],
+  ["z","x","c","v","b","n","m",",",".","/"]
+];
+const KO_LABEL = { q:"ㅂ",w:"ㅈ",e:"ㄷ",r:"ㄱ",t:"ㅅ",y:"ㅛ",u:"ㅕ",i:"ㅑ",o:"ㅐ",p:"ㅔ",a:"ㅁ",s:"ㄴ",d:"ㅇ",f:"ㄹ",g:"ㅎ",h:"ㅗ",j:"ㅓ",k:"ㅏ",l:"ㅣ",z:"ㅋ",x:"ㅌ",c:"ㅊ",v:"ㅍ",b:"ㅠ",n:"ㅜ",m:"ㅡ" };
+const KO_KEY = { ㅂ:"q",ㅈ:"w",ㄷ:"e",ㄱ:"r",ㅅ:"t",ㅛ:"y",ㅕ:"u",ㅑ:"i",ㅐ:"o",ㅔ:"p",ㅁ:"a",ㄴ:"s",ㅇ:"d",ㄹ:"f",ㅎ:"g",ㅗ:"h",ㅓ:"j",ㅏ:"k",ㅣ:"l",ㅋ:"z",ㅌ:"x",ㅊ:"c",ㅍ:"v",ㅠ:"b",ㅜ:"n",ㅡ:"m",ㅃ:"Q",ㅉ:"W",ㄸ:"E",ㄲ:"R",ㅆ:"T",ㅒ:"O",ㅖ:"P" };
+const SHIFT_SYM = { "!":"1","@":"2","#":"3","$":"4","%":"5","^":"6","&":"7","*":"8","(":"9",")":"0","_":"-","+":"=",":":";","\"":"'","<":",",">":".","?":"/" };
+const FINGER = {};
+[["l5","1qaz"],["l4","2wsx"],["l3","3edc"],["l2","45rfvtgb"],["r2","67yhnujm"],["r3","8ik,"],["r4","9ol."],["r5","0-=p;'/"]].forEach(([f, ks]) => ks.split("").forEach(k => FINGER[k] = f));
+const FINGER_NAME = { l5:"왼손 새끼", l4:"왼손 약지", l3:"왼손 중지", l2:"왼손 검지", r2:"오른손 검지", r3:"오른손 중지", r4:"오른손 약지", r5:"오른손 새끼" };
+
+// 한글 한 글자 → 자판 순서대로 낱자 배열 (예: 강 → ㄱ ㅏ ㅇ, 왕 → ㅇ ㅗ ㅏ ㅇ)
+const CHO = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ";
+const JUNG = "ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ";
+const JONG = " ㄱㄲㄳㄴㄵㄶㄷㄹㄺㄻㄼㄽㄾㄿㅀㅁㅂㅄㅅㅆㅇㅈㅊㅋㅌㅍㅎ";
+const COMPOUND = { ㅘ:"ㅗㅏ",ㅙ:"ㅗㅐ",ㅚ:"ㅗㅣ",ㅝ:"ㅜㅓ",ㅞ:"ㅜㅔ",ㅟ:"ㅜㅣ",ㅢ:"ㅡㅣ",ㄳ:"ㄱㅅ",ㄵ:"ㄴㅈ",ㄶ:"ㄴㅎ",ㄺ:"ㄹㄱ",ㄻ:"ㄹㅁ",ㄼ:"ㄹㅂ",ㄽ:"ㄹㅅ",ㄾ:"ㄹㅌ",ㄿ:"ㄹㅍ",ㅀ:"ㄹㅎ",ㅄ:"ㅂㅅ" };
+function jamos(ch) {
+  const c = ch.charCodeAt(0);
+  if (c < 0xAC00 || c > 0xD7A3) return [(COMPOUND[ch] || ch)].join("").split("");
+  const n = c - 0xAC00;
+  const cho = CHO[Math.floor(n / 588)], jung = JUNG[Math.floor((n % 588) / 28)], jong = JONG[n % 28];
+  const out = [cho, ...(COMPOUND[jung] || jung).split("")];
+  if (jong !== " ") out.push(...(COMPOUND[jong] || jong).split(""));
+  return out;
+}
+// 지금 입력 상태에서 다음에 눌러야 할 낱자 (한글은 조합 중인 글자까지 고려)
+function nextUnit(typed) {
+  const i = typed.length;
+  if (i === 0) return target.length ? jamos(target[0])[0] : null;
+  const last = typed[i - 1], want = target[i - 1];
+  if (last === want) return i < target.length ? jamos(target[i])[0] : null;
+  const yj = jamos(last).join(""), tj = jamos(want);
+  const tjs = tj.join("");
+  if (tjs.startsWith(yj)) return tj[yj.length];                        // 조합 중 (가 → 강)
+  if (yj.startsWith(tjs) && i < target.length) {                        // 다음 글자 초성이 받침으로 잠깐 붙은 경우 (가아 → 강)
+    const rest = yj.slice(tjs.length), nj = jamos(target[i]);
+    if (nj.join("").startsWith(rest)) return nj[rest.length];
+  }
+  return "⌫";
+}
+function keyOfUnit(u) {
+  if (u === " ") return { key: " ", shift: false, label: "띄어쓰기" };
+  if (u === "⌫") return { key: "⌫", shift: false, label: "지우기" };
+  if (KO_KEY[u]) { const k = KO_KEY[u]; return { key: k.toLowerCase(), shift: k !== k.toLowerCase(), label: u }; }
+  if (SHIFT_SYM[u]) return { key: SHIFT_SYM[u], shift: true, label: u };
+  if (/[A-Z]/.test(u)) return { key: u.toLowerCase(), shift: true, label: u };
+  return { key: u, shift: false, label: u };
+}
+function buildKeyboard() {
+  const box = $("kbd-keys"); box.innerHTML = "";
+  KBD_ROWS.forEach((row, ri) => {
+    const div = document.createElement("div"); div.className = "kbd-row";
+    if (ri === 3) div.appendChild(mkKey("⇧", "wide", "shift-l"));
+    row.forEach(k => div.appendChild(mkKey(k, "", "k-" + k)));
+    if (ri === 3) div.appendChild(mkKey("⇧", "wide", "shift-r"));
+    if (ri === 0) div.appendChild(mkKey("⌫", "wide", "k-⌫"));
+    box.appendChild(div);
+  });
+  const sp = document.createElement("div"); sp.className = "kbd-row";
+  sp.appendChild(mkKey(" ", "space", "k- ")); box.appendChild(sp);
+}
+function mkKey(k, extra, id) {
+  const d = document.createElement("div");
+  d.className = "key " + (FINGER[k] ? "f-" + FINGER[k] + " " : "") + extra; d.dataset.k = id;
+  const top = (lang === "ko" && KO_LABEL[k]) ? KO_LABEL[k] : (k === " " ? "" : k);
+  d.innerHTML = '<span class="ko">' + escapeHtml(top) + '</span>' + ((lang === "ko" && KO_LABEL[k]) ? '<span class="en">' + k.toUpperCase() + '</span>' : '');
+  return d;
+}
+function highlightKey(typed) {
+  if (timed) return;
+  document.querySelectorAll("#kbd-keys .key").forEach(k => k.classList.remove("next", "next-shift"));
+  const u = nextUnit(typed);
+  const hint = $("kbd-hint");
+  if (u === null) { hint.textContent = ""; return; }
+  const info = keyOfUnit(u);
+  const el = document.querySelector('#kbd-keys .key[data-k="k-' + info.key + '"]');
+  if (el) el.classList.add("next");
+  if (info.shift) {
+    const f = FINGER[info.key] || "";
+    const sh = document.querySelector('#kbd-keys .key[data-k="' + (f.startsWith("l") ? "shift-r" : "shift-l") + '"]');
+    if (sh) sh.classList.add("next-shift");
+  }
+  const fn = FINGER_NAME[FINGER[info.key]] || (info.key === " " ? "엄지" : "");
+  hint.innerHTML = (info.key === "⌫" ? "틀렸어요 · <b>⌫</b> 지우고 다시" : "다음 글자: <b>" + escapeHtml(info.label) + "</b>" + (info.shift ? " (Shift +" : " (") + (info.key === " " ? "Space" : info.key.toUpperCase()) + (fn ? " · " + fn : "") + ")");
+}
+
 function loadProblem() {
   const inp = $("typed");
   inp.value = "";
@@ -890,6 +1186,7 @@ function loadProblem() {
   } else {
     target = queue[idx];
     renderTarget("");
+    highlightKey("");
     $("hud-round").textContent = (idx + 1) + "/" + queue.length;
     $("progress-bar").style.width = (idx / queue.length * 100) + "%";
   }
@@ -949,9 +1246,19 @@ function handleInput(e) {
     if (typed === target) advanceLine();          // 그 줄을 정확히 다 치면 자동으로 다음 줄
   } else {
     renderTarget(typed);
+    highlightKey(typed);
     if (typed.length >= target.length) finishProblem(typed);
   }
 }
+// 틀린 글자 집계: 목표 글자 기준 (띄어쓰기는 제외)
+function tallyMiss(typed, tgt) {
+  for (let i = 0; i < tgt.length; i++) {
+    const tc = tgt[i];
+    if (tc === " ") continue;
+    if (typed[i] !== tc) missCount[tc] = (missCount[tc] || 0) + 1;
+  }
+}
+function topMiss(n) { return Object.entries(missCount).sort((a, b) => b[1] - a[1]).slice(0, n); }
 function handleKeydown(e) {
   if (e.key === "Enter") {
     e.preventDefault();
@@ -975,6 +1282,7 @@ function advanceLine() {
   doneTyped[lineIdx] = typed;
   totalTyped += target.length;
   totalCorrect += countCorrectStr(typed, target);
+  tallyMiss(typed, target);
   if (typed === target) sndClear(); else sndErr();
   lineIdx++;
   $("typed").value = "";
@@ -987,6 +1295,7 @@ function advanceLine() {
 function finishProblem(typed) {
   const correct = countCorrect(typed);
   totalTyped += target.length; totalCorrect += correct;
+  tallyMiss(typed, target);
   if (correct === target.length) sndClear(); else sndErr();
   idx++;
   $("progress-bar").style.width = (idx / queue.length * 100) + "%";
@@ -1056,14 +1365,27 @@ function endSession() {
   if (acc >= 95) praise = "정확도가 정말 높아요! 한 글자도 놓치지 않았네요. 다음엔 속도에 도전해 볼까요?";
   else if (acc >= 85) praise = "잘했어요! 조금만 더 또박또박 치면 만점도 가능해요.";
   else praise = "끝까지 해낸 게 멋져요. 천천히 정확하게 다시 한 번 해볼까요?";
-  const stageLabel = STAGE_NAME[stage] + (timed && currentPassageTitle ? ` · ${currentPassageTitle}` : "");
+  const stepN = curStep();
+  const stageLabel = STAGE_NAME[stage] + (stepN ? ` ${stepN}단계` : "") + (timed && currentPassageTitle ? ` · ${currentPassageTitle}` : "");
   $("res-praise").textContent = `[${lang === "ko" ? "한글" : "영어"} · ${stageLabel}] ` + praise;
 
-  // 랭킹 저장 (타자검정은 지문 제목도 함께)
+  // 자주 틀린 글자 TOP 5
+  const misses = topMiss(5);
+  $("res-miss-box").style.display = misses.length ? "block" : "none";
+  $("res-miss").innerHTML = misses.map(([c, n]) => '<span class="miss-chip">' + escapeHtml(c) + ' <small>×' + n + '</small></span>').join("");
+
+  // 랭킹 저장 (타자검정은 지문 제목, 자리·낱말은 단계, 틀린 글자도 함께)
   const rec = { name: playerName, lang, stage, speed, acc, score, ts: Date.now() };
   if (timed && currentPassageTitle) rec.passage = currentPassageTitle;
+  if (stepN) rec.step = stepN;
+  if (misses.length) rec.miss = misses.map(m => m[0]).join(",");
   $("res-save").textContent = "저장 중…";
-  saveScore(rec).then(j => {
+  ["res-best-box", "res-chart-box", "res-goal-box"].forEach(id => $(id).style.display = "none");
+  // 내 기록(저장 전 상태)을 먼저 읽고 → 저장 (최고 기록 갱신 여부를 정확히 판단)
+  loadMyHistory(playerName).then(hist => {
+    renderMyRecord(hist, rec);
+    return saveScore(rec);
+  }).then(j => {
     if (j && j.ok && j.matched) $("res-save").textContent = "✅ " + j.name + " 기록장에 저장됐어요!" + (j.best ? " (오늘 최고 " + j.best + "타)" : "");
     else if (j && j.ok && !j.matched) $("res-save").textContent = "✅ 랭킹에는 올라갔어요. 기록장에 이 이름이 없어요 — 선생님께 확인!";
     else $("res-save").textContent = "✅ 점수가 저장됐어요! (이번 주 랭킹에서 확인)";
@@ -1074,27 +1396,82 @@ function endSession() {
 }
 
 /* =========================================================
+   ⑧-1 내 기록 · 그래프 · 주간 목표
+========================================================= */
+const WEEK_GOAL = 5; // 일주일 연습 목표 횟수
+function weekStart(ts) { const d = new Date(ts); d.setHours(0, 0, 0, 0); const dow = (d.getDay() + 6) % 7; d.setDate(d.getDate() - dow); return d.getTime(); } // 월요일 0시
+// 기록장 서버에서 내 연습 내역 (없으면 이 PC 기록으로)
+function loadMyHistory(name) {
+  return fetch(RECORD_API + "/api/typing/me?name=" + encodeURIComponent(name) + "&days=60").then(r => r.json()).then(j => {
+    if (j && j.ok && j.matched && Array.isArray(j.hist)) return j.hist;
+    throw new Error("local");
+  }).catch(() => {
+    const all = JSON.parse(localStorage.getItem('tp_scores') || '[]');
+    const since = Date.now() - 60 * 86400000;
+    return all.filter(r => r && r.name === name && r.ts >= since);
+  });
+}
+function renderMyRecord(hist, rec) {
+  const same = hist.filter(h => h.lang === rec.lang && h.stage === rec.stage && (!rec.step || h.step === rec.step || !h.step));
+  const prevBest = same.reduce((m, h) => Math.max(m, +h.speed || 0), 0);
+  const label = (rec.lang === "ko" ? "한글 " : "영어 ") + STAGE_NAME[rec.stage] + (rec.step ? " " + rec.step + "단계" : "");
+  // ① 내 기록
+  let html;
+  if (!same.length) html = label + " 첫 기록이에요! 다음에는 <b>" + rec.speed + "타</b>를 넘어 봐요.";
+  else if (rec.speed > prevBest) html = '<span class="new">🎉 최고 기록 갱신!</span> ' + label + " " + prevBest + "타 → <b>" + rec.speed + "타</b>";
+  else html = label + " 내 최고 기록 <b>" + prevBest + "타</b> · 이번 " + rec.speed + "타" + (prevBest - rec.speed <= 10 ? " (거의 다 왔어요!)" : "");
+  $("res-best").innerHTML = html; $("res-best-box").style.display = "block";
+  // ② 최근 기록 그래프 (같은 종목 최근 9개 + 이번)
+  const pts = same.slice(-9).map(h => ({ v: +h.speed || 0, ts: h.ts, now: false })); pts.push({ v: rec.speed, ts: rec.ts, now: true });
+  if (pts.length >= 2) {
+    const max = Math.max(...pts.map(p => p.v), 1);
+    $("res-chart-ttl").textContent = label + " 최근 기록 (타/분)";
+    $("res-chart").innerHTML = pts.map(p => '<div class="bar' + (p.now ? " now" : "") + '" style="height:' + Math.max(4, Math.round(p.v / max * 70)) + 'px"><span class="v">' + p.v + '</span></div>').join("");
+    $("res-chart-x").innerHTML = pts.map(p => { const d = new Date(p.ts); return "<div>" + (p.now ? "지금" : (d.getMonth() + 1) + "/" + d.getDate()) + "</div>"; }).join("");
+    $("res-chart-box").style.display = "block";
+  }
+  // ③ 이번 주 목표 (모든 종목 합산, 이번 것 포함)
+  const ws = weekStart(Date.now());
+  const n = hist.filter(h => (h.ts || 0) >= ws).length + 1;
+  const done = Math.min(n, WEEK_GOAL);
+  $("res-goal").innerHTML = "이번 주 연습 <b>" + n + "회</b> / 목표 " + WEEK_GOAL + "회" + (n >= WEEK_GOAL ? " · 🏅 목표 달성!" : " · " + (WEEK_GOAL - n) + "번 더 하면 달성!");
+  $("res-goal-bar").innerHTML = Array.from({ length: WEEK_GOAL }, (_, i) => '<div class="' + (i < done ? "on" : "") + '"></div>').join("");
+  $("res-goal-box").style.display = "block";
+}
+
+/* =========================================================
    ⑨ 랭킹 (최근 7일)
 ========================================================= */
-let rankFilter = "all";
+let rankFilter = "all", rankDays = 7;
+const PERIOD_NAME = { 1: "오늘", 7: "이번 주", 30: "이번 달" };
 function openRank() { show("rank"); renderRank(); }
 function renderRank() {
   const list = $("rank-list");
   list.innerHTML = '<div class="rank-empty">불러오는 중…</div>';
+  $("rank-title").textContent = "🏆 " + PERIOD_NAME[rankDays] + " 랭킹";
+  $("rank-sub").textContent = (rankDays === 1 ? "오늘" : "최근 " + rankDays + "일") + " 기록 · 점수 높은 순 · 한 사람당 최고 기록 하나";
   loadScores((all) => {
-    const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
-    let rows = all.filter(r => r && r.ts >= weekAgo);
+    const since = rankDays === 1 ? new Date().setHours(0, 0, 0, 0) : Date.now() - rankDays * 24 * 60 * 60 * 1000;
+    let rows = all.filter(r => r && r.ts >= since);
     if (rankFilter !== "all") rows = rows.filter(r => r.stage === rankFilter);
-    rows.sort((a, b) => b.score - a.score);
-    const top = rows.slice(0, 20);
+    // 같은 이름은 최고 점수 하나만 (연습 횟수는 함께 표시)
+    const byName = new Map();
+    rows.forEach(r => {
+      const k = (r.name || "").replace(/\s+/g, "");
+      const cur = byName.get(k);
+      if (!cur) byName.set(k, { ...r, cnt: 1 });
+      else { cur.cnt++; if (r.score > cur.score) Object.assign(cur, r, { cnt: cur.cnt }); }
+    });
+    const ranked = [...byName.values()].sort((a, b) => b.score - a.score);
+    const top = ranked.slice(0, 30);
 
-    $("rank-count").textContent = "이번 주 기록 " + rows.length + "개";
-    $("storage-badge").innerHTML = fbDB
-      ? '<span class="badge-shared">● 학원 전체 공유 랭킹</span>'
-      : '<span class="badge-local">● 이 컴퓨터 기록만 (공유 랭킹은 세팅 후 켜짐)</span>';
+    $("rank-count").textContent = PERIOD_NAME[rankDays] + " 기록 " + rows.length + "개 · " + ranked.length + "명";
+    $("storage-badge").innerHTML = scoresShared
+      ? '<span class="badge-shared">● 학원 전체 공유 랭킹 (기록장 서버)</span>'
+      : '<span class="badge-local">● 지금은 이 컴퓨터 기록만 보여요 (서버 연결 안 됨)</span>';
 
     if (top.length === 0) {
-      list.innerHTML = '<div class="rank-empty">아직 이번 주 기록이 없어요.<br>연습을 끝내면 여기에 순위가 올라가요! 🏆</div>';
+      list.innerHTML = '<div class="rank-empty">아직 ' + PERIOD_NAME[rankDays] + ' 기록이 없어요.<br>연습을 끝내면 여기에 순위가 올라가요! 🏆</div>';
       return;
     }
     list.innerHTML = "";
@@ -1104,17 +1481,21 @@ function renderRank() {
       const medal = i===0?"🥇":i===1?"🥈":i===2?"🥉":(i+1);
       const d = new Date(r.ts);
       const dateStr = (d.getMonth()+1) + "/" + d.getDate();
-      const stageLabel = STAGE_NAME[r.stage] + (r.passage ? " · " + r.passage : "");
+      const stageLabel = STAGE_NAME[r.stage] + (r.step ? " " + r.step + "단계" : "") + (r.passage ? " · " + r.passage : "");
       row.innerHTML =
         '<div class="rk">' + medal + '</div>' +
-        '<div class="nm">' + escapeHtml(r.name) +
+        '<div class="nm">' + escapeHtml(r.name) + (r.cnt > 1 ? '<span class="cnt">' + r.cnt + '회 연습</span>' : '') +
           '<div class="meta">' + (r.lang==="ko"?"한글":"영어") + " · " + escapeHtml(stageLabel) + " · " + dateStr + '</div>' +
         '</div>' +
         '<div class="sc">' + r.score + '점<div class="meta" style="text-align:right;">' + r.speed + '타 · ' + r.acc + '%</div></div>';
       list.appendChild(row);
     });
-  });
+  }, rankDays);
 }
+document.querySelectorAll("#rank-period .pbtn").forEach(b => b.addEventListener("click", () => {
+  document.querySelectorAll("#rank-period .pbtn").forEach(x => x.classList.remove("active"));
+  b.classList.add("active"); rankDays = +b.dataset.d; renderRank();
+}));
 function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
 document.querySelectorAll("#rank-filter .pbtn").forEach(b => b.addEventListener("click", () => {
@@ -1186,6 +1567,7 @@ initStorage();
 refreshRecentNames();
 const last = localStorage.getItem('tp_lastname');
 if (last) $("name-input").value = last;
+renderStepRow();
 show("home");
 </script>
 </body>
